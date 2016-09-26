@@ -4,6 +4,7 @@
     using System.Data;
     using System.Data.SqlClient;
     using System.IO;
+    using System.Threading;
     using JetBrains.Annotations;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
 
@@ -42,12 +43,13 @@
                 db.Drop();
                 Assert.IsFalse(db.Exists());
                 var fromDt = DateTime.Now;
+                Thread.Sleep(20);
                 step.Rollback();
 
                 var lastRestore = db.LastRestore();
                 Assert.IsNotNull(lastRestore);
                 Assert.IsTrue(lastRestore > fromDt,
-                              $"Last restored database at {lastRestore.Value.ToString("dd.mm.yyyy HH:mm:ss ms")} but start rollback at {fromDt.ToString("dd.mm.yyyy HH:mm:ss ms")}");
+                              $"Last restored database at {lastRestore.Value.ToString("dd.MM.yyyy HH:mm:ss ms")} but start rollback at {fromDt.ToString("dd.MM.yyyy HH:mm:ss ms")}");
                 Assert.IsTrue(db.Exists());
             }
         }
@@ -66,6 +68,7 @@
                 db.EnsureBakcupIsValid(path);
                 Assert.IsTrue(db.Exists());
                 var fromDt = DateTime.Now;
+                Thread.Sleep(20);
                 step.Rollback();
 
                 var lastRestore = db.LastRestore();
