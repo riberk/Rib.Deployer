@@ -43,12 +43,10 @@
                 Assert.IsFalse(db.Exists());
                 var fromDt = DateTime.Now;
                 step.Rollback();
-                var toDt = DateTime.Now;
-                var ts = toDt - fromDt;
 
                 var lastRestore = db.LastRestore();
                 Assert.IsNotNull(lastRestore);
-                Assert.IsTrue(ts > toDt -  lastRestore);
+                Assert.IsTrue(lastRestore > fromDt);
                 Assert.IsTrue(db.Exists());
             }
         }
@@ -68,12 +66,10 @@
                 Assert.IsTrue(db.Exists());
                 var fromDt = DateTime.Now;
                 step.Rollback();
-                var toDt = DateTime.Now;
-                var ts = toDt - fromDt;
 
                 var lastRestore = db.LastRestore();
                 Assert.IsNotNull(lastRestore);
-                Assert.IsTrue(ts > toDt - lastRestore);
+                Assert.IsTrue(lastRestore > fromDt);
             }
         }
 
