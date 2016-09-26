@@ -46,7 +46,8 @@
 
                 var lastRestore = db.LastRestore();
                 Assert.IsNotNull(lastRestore);
-                Assert.IsTrue(lastRestore > fromDt);
+                Assert.IsTrue(lastRestore > fromDt,
+                              $"Last restored database at {lastRestore.Value.ToString("dd.mm.yyyy HH:mm:ss ms")} but start rollback at {fromDt.ToString("dd.mm.yyyy HH:mm:ss ms")}");
                 Assert.IsTrue(db.Exists());
             }
         }
