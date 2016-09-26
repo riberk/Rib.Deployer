@@ -19,6 +19,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rib.Deployer.Steps.Applicat
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rib.Deployer.Tests", "Rib.Deployer.Tests\Rib.Deployer.Tests.csproj", "{B35A32EB-CF55-48B0-963A-C01185B5A1B9}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rib.Deployer.Steps.Database.Tests", "Rib.Deployer.Steps.Database.Tests\Rib.Deployer.Steps.Database.Tests.csproj", "{8019B47A-44C6-4619-8AD5-FC9A404AD854}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -57,6 +59,10 @@ Global
 		{B35A32EB-CF55-48B0-963A-C01185B5A1B9}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{B35A32EB-CF55-48B0-963A-C01185B5A1B9}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{B35A32EB-CF55-48B0-963A-C01185B5A1B9}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8019B47A-44C6-4619-8AD5-FC9A404AD854}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8019B47A-44C6-4619-8AD5-FC9A404AD854}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8019B47A-44C6-4619-8AD5-FC9A404AD854}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8019B47A-44C6-4619-8AD5-FC9A404AD854}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

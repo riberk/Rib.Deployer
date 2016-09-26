@@ -39,15 +39,23 @@
                 Logger.Trace($"Restoring database {databaseName}");
                 connection.Open();
 
-                Logger.Trace("Set single user");
-                cmd.CommandText = $"alter database [{databaseName}] set SINGLE_USER WITH ROLLBACK IMMEDIATE";
-                cmd.ExecuteNonQuery();
+                cmd.CommandText =
+                        $"SELECT name FROM master.dbo.sysdatabases WHERE ('[' + name + ']' = N'{databaseName}' OR name = N'{databaseName}')";
+                var exists = (string)cmd.ExecuteScalar() != null;
 
-                cmd.CommandText = $"Use [{databaseName}];";
-                cmd.ExecuteNonQuery();
+                if (exists)
+                {
+                    Logger.Trace("Set single user");
+                    cmd.CommandText = $"alter database [{databaseName}] set SINGLE_USER WITH ROLLBACK IMMEDIATE";
+                    cmd.ExecuteNonQuery();
 
-                cmd.CommandText = "Use [master];";
-                cmd.ExecuteNonQuery();
+                    cmd.CommandText = $"Use [{databaseName}];";
+                    cmd.ExecuteNonQuery();
+
+                    cmd.CommandText = "Use [master];";
+                    cmd.ExecuteNonQuery();
+                }
+                
 
                 Logger.Trace("Restoring");
                 cmd.CommandText = $"restore database [{databaseName}] from disk = N'{Settings.BackupPath}'";
