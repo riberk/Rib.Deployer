@@ -30,7 +30,7 @@
             Settings.Close?.Invoke();
         }
 
-        public static ActionDeployStep Create([NotNull] string name, [NotNull] Action apply, [NotNull] Action rollback, Action close = null)
+        public static IDeployStep Create([NotNull] string name, [NotNull] Action apply, [NotNull] Action rollback, Action close = null)
         {
             return new ActionDeployStep(new ActionDeploySettings(name, apply, rollback, close));
         }

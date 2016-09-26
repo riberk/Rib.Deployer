@@ -43,8 +43,8 @@
         public void CreateTest()
         {
             var step = ActionDeployStep.Create("name", () => { }, () => { });
+            Assert.IsNotNull(step as ActionDeployStep);
             Assert.AreEqual("name", step.Name);
-            Assert.IsNotNull(step);
         }
     }
 }
