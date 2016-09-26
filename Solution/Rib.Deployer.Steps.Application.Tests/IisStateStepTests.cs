@@ -1,6 +1,7 @@
 ﻿namespace Rib.Deployer.Steps.Application
 {
     using System;
+    using System.Collections.Generic;
     using System.IO;
     using System.Threading;
     using JetBrains.Annotations;
@@ -24,6 +25,23 @@
                 step.Apply();
                 Assert.AreEqual(ObjectState.Stopped, s.State());
             }
+        }
+
+        [TestMethod]
+        [ExpectedException(typeof(KeyNotFoundException))]
+        public void ApplyWithoutSiteTest()
+        {
+            var siteName = "ApplyWithoutSiteTest";
+            var step = new IisStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop));
+            step.Apply();
+        }
+
+        [TestMethod]
+        public void RollbackWithoutSiteTest()
+        {
+            var siteName = "RollbackWithoutSiteTest";
+            var step = new IisStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop));
+            step.Rollback();
         }
 
         [TestMethod]

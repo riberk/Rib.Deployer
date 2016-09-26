@@ -31,8 +31,6 @@
                     case IisApplicationSettings.State.Stop:
                         Stop(site);
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
             }
         }
@@ -56,8 +54,6 @@
                     case IisApplicationSettings.State.Stop:
                         Start(site);
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
             }
         }

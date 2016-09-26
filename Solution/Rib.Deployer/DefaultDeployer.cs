@@ -14,6 +14,7 @@
         public DefaultDeployer([ItemNotNull] [NotNull] params IDeployStep[] steps)
         {
             if (steps == null) throw new ArgumentNullException(nameof(steps));
+            if (steps.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(steps));
             _steps = steps;
         }
 

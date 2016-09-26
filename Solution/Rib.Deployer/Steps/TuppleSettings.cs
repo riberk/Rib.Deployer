@@ -7,10 +7,12 @@ namespace Rib.Deployer.Steps
     public class TuppleSettings : IStepSettings
     {
         /// <summary>»нициализирует новый экземпл€р класса <see cref="T:System.Object" />.</summary>
-        public TuppleSettings([NotNull] string name, [NotNull, ItemNotNull] params IDeployStep[] steps)
+        public TuppleSettings([NotNull] string name, [NotNull] [ItemNotNull] params IDeployStep[] steps)
         {
-            if (name == null) throw new ArgumentNullException(nameof(name));
             if (steps == null) throw new ArgumentNullException(nameof(steps));
+            if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
+            if (steps.Length == 0) throw new ArgumentException("Value cannot be an empty collection.", nameof(steps));
+
             Name = name;
             Steps = steps;
         }
