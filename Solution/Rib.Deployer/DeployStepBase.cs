@@ -14,7 +14,7 @@
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
             Settings = settings;
-            Logger = LoggerFactory.Create(GetType());
+            Logger = DeployerContext.LoggerFactory.Create(GetType());
         }
 
         public T Settings { get; }

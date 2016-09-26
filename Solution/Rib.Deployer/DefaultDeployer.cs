@@ -8,7 +8,7 @@
 
     public class DefaultDeployer : IDeployer
     {
-        [NotNull] private static readonly ILog Logger = LoggerFactory.Create<DefaultDeployer>();
+        [NotNull] private static readonly ILog Logger = DeployerContext.LoggerFactory.Create(typeof(DefaultDeployer));
         [NotNull, ItemNotNull] private readonly IReadOnlyCollection<IDeployStep> _steps;
 
         public DefaultDeployer([ItemNotNull] [NotNull] params IDeployStep[] steps)
@@ -70,7 +70,7 @@
             Logger.Info("Deploy finished");
         }
 
-        private void Rollback([NotNull, ItemNotNull] IEnumerable<IDeployStep> executedSteps)
+        private static void Rollback([NotNull, ItemNotNull] IEnumerable<IDeployStep> executedSteps)
         {
             var watch = new Stopwatch();
             foreach (var executedStep in executedSteps)

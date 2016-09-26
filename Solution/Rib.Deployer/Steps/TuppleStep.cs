@@ -1,4 +1,4 @@
-namespace Rib.Deployer
+namespace Rib.Deployer.Steps
 {
     using System;
     using System.Collections.Generic;
