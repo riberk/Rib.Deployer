@@ -67,8 +67,12 @@
   </Choose>
   <ItemGroup>
     <Compile Include="IisApplicationSettingsTests.cs" />
-    <Compile Include="IisStateStepTests.cs" />
+    <Compile Include="IisObjectStateStepTests.cs" />
+    <Compile Include="IisPoolStateStepTests.cs" />
+    <Compile Include="IisSiteStateStepTests.cs" />
+    <Compile Include="PoolObjectTest.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="SiteObjectTest.cs" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Rib.Deployer.Steps.Application\Rib.Deployer.Steps.Application.csproj">
