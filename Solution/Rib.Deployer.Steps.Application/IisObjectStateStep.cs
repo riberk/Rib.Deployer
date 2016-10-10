@@ -2,17 +2,18 @@ namespace Rib.Deployer.Steps.Application
 {
     using System;
     using System.Collections.Generic;
+    using System.Threading;
     using JetBrains.Annotations;
     using Microsoft.Web.Administration;
 
     public abstract class IisObjectStateStep : DeployStepBase<IisApplicationSettings>
     {
-        internal abstract IIIsObject GetObject(string name, ServerManager sm);
-
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
         protected IisObjectStateStep([NotNull] IisApplicationSettings settings) : base(settings)
         {
         }
+
+        internal abstract IIIsObject GetObject(string name, ServerManager sm);
 
         /// <summary>Применить шаг</summary>
         public override void Apply()
@@ -33,8 +34,6 @@ namespace Rib.Deployer.Steps.Application
                     case IisApplicationSettings.State.Stop:
                         Stop(site);
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
             }
         }
@@ -58,8 +57,6 @@ namespace Rib.Deployer.Steps.Application
                     case IisApplicationSettings.State.Stop:
                         Start(site);
                         break;
-                    default:
-                        throw new ArgumentOutOfRangeException();
                 }
             }
         }
@@ -71,10 +68,7 @@ namespace Rib.Deployer.Steps.Application
             {
                 site.Stop();
             }
-            if (site.State != ObjectState.Stopped)
-            {
-                throw new InvalidOperationException("Could not stop");
-            }
+            EnsureState(site, ObjectState.Stopped, Settings.WaitDuration, Settings.MaxWaits);
         }
 
         private void Start([NotNull] IIIsObject site)
@@ -84,30 +78,42 @@ namespace Rib.Deployer.Steps.Application
             {
                 site.Start();
             }
-            if (site.State != ObjectState.Started)
+            EnsureState(site, ObjectState.Started, Settings.WaitDuration, Settings.MaxWaits);
+        }
+
+        private void EnsureState([NotNull] IIIsObject site, ObjectState state, int waitDuration = 1000, int maxWaits = 5)
+        {
+            var iterations = 0;
+            while (site.State != state || iterations > maxWaits)
             {
-                throw new InvalidOperationException("Could not start");
+                Logger.Warn($"{site} not {state}. Wait {waitDuration} on {iterations + 1} iteration");
+                Thread.Sleep(waitDuration);
+                iterations++;
+            }
+            if (site.State != state)
+            {
+                throw new InvalidOperationException($"Could not start. {site.State}");
             }
         }
 
-        public static IDeployStep CreateSiteStarter([NotNull] string name, [NotNull] string siteName)
+        public static IDeployStep CreateSiteStarter([NotNull] string name, [NotNull] string siteName, int waitDuration = 1000, int maxWaits = 10)
         {
-            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start));
+            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start, waitDuration, maxWaits));
         }
 
-        public static IDeployStep CreateSiteStoper([NotNull] string name, [NotNull] string siteName)
+        public static IDeployStep CreateSiteStoper([NotNull] string name, [NotNull] string siteName, int waitDuration = 1000, int maxWaits = 10)
         {
-            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop));
+            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop, waitDuration, maxWaits));
         }
 
-        public static IDeployStep CreatePoolStarter([NotNull] string name, [NotNull] string siteName)
+        public static IDeployStep CreatePoolStarter([NotNull] string name, [NotNull] string siteName, int waitDuration = 1000, int maxWaits = 10)
         {
-            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start));
+            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start, waitDuration, maxWaits));
         }
 
-        public static IDeployStep CreatePoolStoper([NotNull] string name, [NotNull] string siteName)
+        public static IDeployStep CreatePoolStoper([NotNull] string name, [NotNull] string siteName, int waitDuration = 1000, int maxWaits = 10)
         {
-            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop));
+            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop, waitDuration, maxWaits));
         }
     }
 }
