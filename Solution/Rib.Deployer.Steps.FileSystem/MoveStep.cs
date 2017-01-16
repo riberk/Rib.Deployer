@@ -1,12 +1,13 @@
 namespace Rib.Deployer.Steps.FileSystem
 {
     using System.IO;
+    using Common.Logging;
     using JetBrains.Annotations;
 
     public class MoveStep : DeployStepBase<HasDestFsSettings>
     {
         /// <summary>»нициализирует новый экземпл€р класса <see cref="T:System.Object" />.</summary>
-        public MoveStep([NotNull] HasDestFsSettings settings) : base(settings)
+        public MoveStep([NotNull] HasDestFsSettings settings, ILog logger) : base(settings, logger)
         {
         }
 
@@ -42,7 +43,12 @@ namespace Rib.Deployer.Steps.FileSystem
 
         public static IDeployStep Create([NotNull] string name, [NotNull] string src, [NotNull] string dest)
         {
-            return new MoveStep(new HasDestFsSettings(name, src, dest));
+            return new MoveStep(new HasDestFsSettings(name, src, dest), null);
+        }
+
+        public static IDeployStep Create([NotNull] string name, [NotNull] string src, [NotNull] string dest, ILog logger)
+        {
+            return new MoveStep(new HasDestFsSettings(name, src, dest), logger);
         }
     }
 }

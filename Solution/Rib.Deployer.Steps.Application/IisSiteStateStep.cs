@@ -1,12 +1,13 @@
 ﻿namespace Rib.Deployer.Steps.Application
 {
+    using Common.Logging;
     using JetBrains.Annotations;
     using Microsoft.Web.Administration;
 
     internal class IisSiteStateStep : IisObjectStateStep
     {
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
-        public IisSiteStateStep([NotNull] IisApplicationSettings settings) : base(settings)
+        public IisSiteStateStep([NotNull] IisApplicationSettings settings, ILog logger) : base(settings, logger)
         {
         }
 

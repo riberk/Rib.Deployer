@@ -14,7 +14,7 @@
             var path = Path.Combine(currentPath, "MoveFileDir");
             var newPath = Path.Combine(currentPath);
 
-            var step = new MoveStep(new HasDestFsSettings("move", Path.Combine(path, "1.txt"), Path.Combine(newPath, "1_moved.txt")));
+            var step = new MoveStep(new HasDestFsSettings("move", Path.Combine(path, "1.txt"), Path.Combine(newPath, "1_moved.txt")), null);
             
             step.Apply();
 
@@ -33,7 +33,7 @@
 
             Assert.IsTrue(Directory.Exists(path));
 
-            var step = new MoveStep(new HasDestFsSettings("Copy directory", path, newPath));
+            var step = new MoveStep(new HasDestFsSettings("Copy directory", path, newPath), null);
             step.Apply();
 
             Assert.IsFalse(File.Exists(Path.Combine(path, "1.txt")));
@@ -50,7 +50,7 @@
             var path = Path.Combine(currentPath, "RollbackMoveFileDir");
             var newPath = Path.Combine(currentPath);
 
-            var step = new MoveStep(new HasDestFsSettings("move", Path.Combine(path, "1.txt"), Path.Combine(newPath, "1_rollback_moved.txt")));
+            var step = new MoveStep(new HasDestFsSettings("move", Path.Combine(path, "1.txt"), Path.Combine(newPath, "1_rollback_moved.txt")), null);
 
             step.Apply();
 
@@ -74,7 +74,7 @@
 
             Assert.IsTrue(Directory.Exists(path));
 
-            var step = new MoveStep(new HasDestFsSettings("Copy directory", path, newPath));
+            var step = new MoveStep(new HasDestFsSettings("Copy directory", path, newPath), null);
             step.Apply();
 
             Assert.IsFalse(File.Exists(Path.Combine(path, "1.txt")));

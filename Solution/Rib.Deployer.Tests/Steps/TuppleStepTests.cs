@@ -30,7 +30,7 @@
             m1.Setup(x => x.Apply()).Verifiable();
             m2.Setup(x => x.Apply()).Verifiable();
 
-            var step = new TuppleStep(new TuppleSettings("name", m1.Object, m2.Object));
+            var step = new TuppleStep(new TuppleSettings("name", m1.Object, m2.Object), null);
 
             step.Apply();
         }
@@ -48,7 +48,7 @@
             m1.Setup(x => x.Rollback()).Verifiable();
 
 
-            var step = new TuppleStep(new TuppleSettings("name", m1.Object, m2.Object));
+            var step = new TuppleStep(new TuppleSettings("name", m1.Object, m2.Object), null);
             try
             {
                 step.Apply();
@@ -68,7 +68,7 @@
             m2.Setup(x => x.Name).Returns("Name 2").Verifiable();
             m1.Setup(x => x.Apply()).Verifiable();
             m2.Setup(x => x.Apply()).Verifiable();
-            var step = new TuppleStep(new TuppleSettings("name", m1.Object, m2.Object));
+            var step = new TuppleStep(new TuppleSettings("name", m1.Object, m2.Object), null);
 
             step.Apply();
             m1.Setup(x => x.Rollback()).Verifiable();
@@ -86,7 +86,7 @@
             m2.Setup(x => x.Name).Returns("Name 2").Verifiable();
             m1.Setup(x => x.Apply()).Verifiable();
             m2.Setup(x => x.Apply()).Verifiable();
-            var step = new TuppleStep(new TuppleSettings("name", m1.Object, m2.Object));
+            var step = new TuppleStep(new TuppleSettings("name", m1.Object, m2.Object), null);
 
             step.Apply();
             m1.Setup(x => x.Rollback()).Verifiable();

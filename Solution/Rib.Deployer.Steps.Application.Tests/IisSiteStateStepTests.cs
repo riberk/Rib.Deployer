@@ -21,7 +21,7 @@
             {
                 s.EnsureStart();
                 Assert.AreEqual(ObjectState.Started, s.State());
-                var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop, 1000, 10));
+                var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop, 1000, 10), null);
                 step.Apply();
                 Assert.AreEqual(ObjectState.Stopped, s.State());
             }
@@ -32,7 +32,7 @@
         public void ApplyWithoutSiteTest()
         {
             var siteName = "ApplyWithoutSiteTest";
-            var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop, 1000, 10));
+            var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop, 1000, 10), null);
             step.Apply();
         }
 
@@ -40,7 +40,7 @@
         public void RollbackWithoutSiteTest()
         {
             var siteName = "RollbackWithoutSiteTest";
-            var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop, 1000, 10));
+            var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop, 1000, 10), null);
             step.Rollback();
         }
 
@@ -52,7 +52,7 @@
             {
                 s.EnsureStop();
                 Assert.AreEqual(ObjectState.Stopped, s.State());
-                var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Start, 1000, 10));
+                var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Start, 1000, 10), null);
                 step.Apply();
                 Assert.AreEqual(ObjectState.Started, s.State());
             }
@@ -66,7 +66,7 @@
             {
                 s.EnsureStart();
                 Assert.AreEqual(ObjectState.Started, s.State());
-                var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop, 1000, 10));
+                var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Stop, 1000, 10), null);
                 step.Apply();
                 Assert.AreEqual(ObjectState.Stopped, s.State());
                 step.Rollback();
@@ -82,7 +82,7 @@
             {
                 s.EnsureStop();
                 Assert.AreEqual(ObjectState.Stopped, s.State());
-                var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Start, 1000, 10));
+                var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisApplicationSettings.State.Start, 1000, 10), null);
                 step.Apply();
                 Assert.AreEqual(ObjectState.Started, s.State());
                 step.Rollback();

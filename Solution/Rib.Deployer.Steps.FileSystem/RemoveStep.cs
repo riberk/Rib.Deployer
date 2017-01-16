@@ -2,6 +2,7 @@
 {
     using System;
     using System.IO;
+    using Common.Logging;
     using JetBrains.Annotations;
 
     public class RemoveStep : DeployStepBase<FsSettings>, IDisposable
@@ -10,8 +11,9 @@
         [NotNull] private string _destPath;
 
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
-        public RemoveStep([NotNull] FsSettings settings) : base(settings)
+        public RemoveStep([NotNull] FsSettings settings, ILog logger) : base(settings, logger)
         {
+           
         }
 
         public override void Apply()
@@ -65,7 +67,12 @@
 
         public static IDeployStep Create([NotNull] string name, [NotNull] string src)
         {
-            return new RemoveStep(new FsSettings(name, src));
+            return new RemoveStep(new FsSettings(name, src), null);
+        }
+
+        public static IDeployStep Create([NotNull] string name, [NotNull] string src, ILog logger)
+        {
+            return new RemoveStep(new FsSettings(name, src), logger);
         }
     }
 }

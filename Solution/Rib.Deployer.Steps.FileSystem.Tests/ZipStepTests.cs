@@ -19,7 +19,7 @@
             var path = Path.Combine(currentPath, "ZipStep");
             var newPath = Path.Combine(currentPath, "apply_zip.zip");
 
-            var step = new ZipStep(new HasDestFsSettings("zip", path, newPath));
+            var step = new ZipStep(new HasDestFsSettings("zip", path, newPath), null);
             step.Apply();
 
             Assert.IsTrue(File.Exists(newPath));
@@ -52,7 +52,7 @@
             var path = Path.Combine(currentPath, "RollbackZipStep");
             var newPath = Path.Combine(currentPath, "rollback_zip.zip");
 
-            var step = new ZipStep(new HasDestFsSettings("zip", path, newPath));
+            var step = new ZipStep(new HasDestFsSettings("zip", path, newPath), null);
             step.Apply();
 
             Assert.IsTrue(File.Exists(newPath));

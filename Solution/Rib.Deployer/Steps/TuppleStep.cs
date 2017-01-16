@@ -3,6 +3,7 @@ namespace Rib.Deployer.Steps
     using System;
     using System.Collections.Generic;
     using System.Linq;
+    using Common.Logging;
     using JetBrains.Annotations;
 
     public class TuppleStep : DeployStepBase<TuppleSettings>, IDisposable
@@ -10,9 +11,11 @@ namespace Rib.Deployer.Steps
         [NotNull] private readonly List<IDeployStep> _invoked = new List<IDeployStep>();
 
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
-        public TuppleStep([NotNull] TuppleSettings settings) : base(settings)
+        public TuppleStep([NotNull] TuppleSettings settings, ILog logger) : base(settings, logger)
         {
         }
+
+
 
         /// <summary>Применить шаг</summary>
         public override void Apply()
@@ -62,7 +65,12 @@ namespace Rib.Deployer.Steps
 
         public static IDeployStep Create([NotNull] string name, [NotNull] params IDeployStep[] steps)
         {
-            return new TuppleStep(new TuppleSettings(name, steps));
+            return new TuppleStep(new TuppleSettings(name, steps), null);
+        }
+
+        public static IDeployStep Create([NotNull] string name, ILog logger, [NotNull] params IDeployStep[] steps)
+        {
+            return new TuppleStep(new TuppleSettings(name, steps), logger);
         }
     }
 }

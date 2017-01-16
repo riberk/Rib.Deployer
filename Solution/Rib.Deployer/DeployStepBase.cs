@@ -5,16 +5,20 @@
     using JetBrains.Annotations;
 
     public abstract class DeployStepBase<T> : IDeployStep<T>
-            where T : class, IStepSettings
+        where T : class, IStepSettings
     {
         [NotNull] protected readonly ILog Logger;
 
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
-        protected DeployStepBase([NotNull] T settings)
+        protected DeployStepBase([NotNull] T settings) : this(settings, null)
+        {
+        }
+
+        protected DeployStepBase([NotNull] T settings, ILog logger)
         {
             if (settings == null) throw new ArgumentNullException(nameof(settings));
             Settings = settings;
-            Logger = DeployerContext.LoggerFactory.Create(GetType());
+            Logger = logger ?? DeployerContext.LoggerFactory.Create(GetType());
         }
 
         public T Settings { get; }

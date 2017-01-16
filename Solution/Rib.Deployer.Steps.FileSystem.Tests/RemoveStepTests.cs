@@ -14,7 +14,7 @@
             var path = Path.Combine(currentPath, "RemovedItems");
 
             Assert.IsTrue(File.Exists(Path.Combine(path, "1.txt")));
-            var step = new RemoveStep(new FsSettings("remove", Path.Combine(path, "1.txt")));
+            var step = new RemoveStep(new FsSettings("remove", Path.Combine(path, "1.txt")), null);
             step.Apply();
             Assert.IsFalse(File.Exists(Path.Combine(path, "1.txt")));
         }
@@ -28,7 +28,7 @@
             var path = Path.Combine(currentPath, "DirRemovedItems");
 
             Assert.IsTrue(Directory.Exists(path));
-            var step = new RemoveStep(new FsSettings("remove", path));
+            var step = new RemoveStep(new FsSettings("remove", path), null);
             step.Apply();
             Assert.IsFalse(Directory.Exists(path));
         }
@@ -42,7 +42,7 @@
             var path = Path.Combine(currentPath, "RollbackRemovedItems");
 
             Assert.IsTrue(File.Exists(Path.Combine(path, "1.txt")));
-            var step = new RemoveStep(new FsSettings("remove", Path.Combine(path, "1.txt")));
+            var step = new RemoveStep(new FsSettings("remove", Path.Combine(path, "1.txt")), null);
             step.Apply();
             Assert.IsFalse(File.Exists(Path.Combine(path, "1.txt")));
             step.Rollback();
@@ -58,7 +58,7 @@
             var path = Path.Combine(currentPath, "RollbackDirRemovedItems");
 
             Assert.IsTrue(Directory.Exists(path));
-            var step = new RemoveStep(new FsSettings("remove", path));
+            var step = new RemoveStep(new FsSettings("remove", path), null);
             step.Apply();
             Assert.IsFalse(Directory.Exists(path));
             step.Rollback();
@@ -75,7 +75,7 @@
             var path = Path.Combine(currentPath, "CloseRemovedItems");
 
             Assert.IsTrue(File.Exists(Path.Combine(path, "1.txt")));
-            var step = new RemoveStep(new FsSettings("remove", Path.Combine(path, "1.txt")));
+            var step = new RemoveStep(new FsSettings("remove", Path.Combine(path, "1.txt")), null);
             step.Apply();
             Assert.IsFalse(File.Exists(Path.Combine(path, "1.txt")));
             step.Dispose();
@@ -90,7 +90,7 @@
             var path = Path.Combine(currentPath, "ClosekDirRemovedItems");
 
             Assert.IsTrue(Directory.Exists(path));
-            var step = new RemoveStep(new FsSettings("remove", path));
+            var step = new RemoveStep(new FsSettings("remove", path), null);
             step.Apply();
             Assert.IsFalse(Directory.Exists(path));
             step.Dispose();

@@ -3,13 +3,14 @@ namespace Rib.Deployer.Steps.Application
     using System;
     using System.Collections.Generic;
     using System.Threading;
+    using Common.Logging;
     using JetBrains.Annotations;
     using Microsoft.Web.Administration;
 
     public abstract class IisObjectStateStep : DeployStepBase<IisApplicationSettings>
     {
         /// <summary>»нициализирует новый экземпл€р класса <see cref="T:System.Object" />.</summary>
-        protected IisObjectStateStep([NotNull] IisApplicationSettings settings) : base(settings)
+        protected IisObjectStateStep([NotNull] IisApplicationSettings settings, ILog logger) : base(settings, logger)
         {
         }
 
@@ -98,22 +99,43 @@ namespace Rib.Deployer.Steps.Application
 
         public static IDeployStep CreateSiteStarter([NotNull] string name, [NotNull] string siteName, int waitDuration = 1000, int maxWaits = 10)
         {
-            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start, waitDuration, maxWaits));
+            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start, waitDuration, maxWaits), null);
+        }
+
+        public static IDeployStep CreateSiteStarter([NotNull] string name, [NotNull] string siteName, ILog logger, int waitDuration = 1000, int maxWaits = 10)
+        {
+            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start, waitDuration, maxWaits), logger);
         }
 
         public static IDeployStep CreateSiteStoper([NotNull] string name, [NotNull] string siteName, int waitDuration = 1000, int maxWaits = 10)
         {
-            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop, waitDuration, maxWaits));
+            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop, waitDuration, maxWaits), null);
         }
+
+        public static IDeployStep CreateSiteStoper([NotNull] string name, [NotNull] string siteName, ILog logger, int waitDuration = 1000, int maxWaits = 10)
+        {
+            return new IisSiteStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop, waitDuration, maxWaits), logger);
+        }
+
 
         public static IDeployStep CreatePoolStarter([NotNull] string name, [NotNull] string siteName, int waitDuration = 1000, int maxWaits = 10)
         {
-            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start, waitDuration, maxWaits));
+            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start, waitDuration, maxWaits), null);
+        }
+
+        public static IDeployStep CreatePoolStarter([NotNull] string name, [NotNull] string siteName, ILog logger, int waitDuration = 1000, int maxWaits = 10)
+        {
+            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Start, waitDuration, maxWaits), logger);
         }
 
         public static IDeployStep CreatePoolStoper([NotNull] string name, [NotNull] string siteName, int waitDuration = 1000, int maxWaits = 10)
         {
-            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop, waitDuration, maxWaits));
+            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop, waitDuration, maxWaits), null);
+        }
+
+        public static IDeployStep CreatePoolStoper([NotNull] string name, [NotNull] string siteName, ILog logger, int waitDuration = 1000, int maxWaits = 10)
+        {
+            return new IisPoolStateStep(new IisApplicationSettings(name, siteName, IisApplicationSettings.State.Stop, waitDuration, maxWaits), logger);
         }
     }
 }

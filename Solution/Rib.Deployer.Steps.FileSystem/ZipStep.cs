@@ -3,12 +3,13 @@
     using System.IO;
     using System.IO.Compression;
     using System.Text;
+    using Common.Logging;
     using JetBrains.Annotations;
 
     public class ZipStep : DeployStepBase<HasDestFsSettings>
     {
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
-        public ZipStep([NotNull] HasDestFsSettings settings) : base(settings)
+        public ZipStep([NotNull] HasDestFsSettings settings, ILog logger) : base(settings, logger)
         {
         }
 
@@ -26,7 +27,12 @@
 
         public static IDeployStep Create([NotNull] string name, [NotNull] string src, [NotNull] string dest)
         {
-            return new ZipStep(new HasDestFsSettings(name, src, dest));
+            return new ZipStep(new HasDestFsSettings(name, src, dest), null);
+        }
+
+        public static IDeployStep Create([NotNull] string name, [NotNull] string src, [NotNull] string dest, ILog logger)
+        {
+            return new ZipStep(new HasDestFsSettings(name, src, dest), logger);
         }
     }
 }

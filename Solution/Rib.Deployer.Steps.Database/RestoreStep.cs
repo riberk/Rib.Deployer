@@ -3,6 +3,7 @@
     using System;
     using System.Data.SqlClient;
     using System.IO;
+    using Common.Logging;
     using JetBrains.Annotations;
 
     public class RestoreStep : DeployStepBase<RestoreSettings>, IDisposable
@@ -13,7 +14,14 @@
 
         public RestoreStep([NotNull] RestoreSettings settings,
                            [NotNull] IDatabaseInfo databaseInfo,
-                           bool infoOwner = false) : base(settings)
+                           bool infoOwner = false) : this(settings, databaseInfo, infoOwner, null)
+        {
+        }
+
+        public RestoreStep([NotNull] RestoreSettings settings,
+                           [NotNull] IDatabaseInfo databaseInfo,
+                           bool infoOwner,
+                           ILog logger) : base(settings, logger)
         {
             if (databaseInfo == null) throw new ArgumentNullException(nameof(databaseInfo));
             _databaseInfo = databaseInfo;
@@ -67,11 +75,16 @@
 
         public static IDeployStep Create(string name, string connectionString, string backupPath)
         {
+            return Create(name, connectionString, backupPath, null);
+        }
+
+        public static IDeployStep Create(string name, string connectionString, string backupPath, ILog logger)
+        {
             var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
             var databaseName = sqlConnectionStringBuilder.InitialCatalog;
             sqlConnectionStringBuilder.InitialCatalog = "master";
             var info = new DatabaseInfo(databaseName, sqlConnectionStringBuilder.ToString(), false);
-            return new RestoreStep(new RestoreSettings(name, backupPath), info);
+            return new RestoreStep(new RestoreSettings(name, backupPath), info, true, logger);
         }
 
         public class PreviousState

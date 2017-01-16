@@ -1,6 +1,7 @@
 ﻿namespace Rib.Deployer
 {
     using System;
+    using Common.Logging;
     using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Moq;
 
@@ -23,7 +24,7 @@
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentNullException))]
-        public void NullTest() => new DefaultDeployer(null);
+        public void NullTest() => new DefaultDeployer((ILog)null, null);
 
         [TestMethod]
         [ExpectedException(typeof(ArgumentException))]
