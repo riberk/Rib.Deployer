@@ -61,7 +61,8 @@
                 try
                 {
                     Logger.Info($"Closing {deployStep.Name} step");
-                    deployStep.Close();
+                    var disposable = deployStep as IDisposable;
+                    disposable?.Dispose();
                 }
                 catch (Exception e)
                 {

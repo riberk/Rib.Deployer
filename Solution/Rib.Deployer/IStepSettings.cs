@@ -4,6 +4,7 @@
 
     public interface IStepSettings
     {
+        /// <summary>Имя шага</summary>
         [NotNull]
         string Name { get; }
     }

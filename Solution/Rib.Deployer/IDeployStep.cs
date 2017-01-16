@@ -16,11 +16,6 @@
         /// Откатить шаг
         /// </summary>
         void Rollback();
-
-        /// <summary>
-        /// Финализировать шаг. Вызывается после применения всех шагов
-        /// </summary>
-        void Close();
     }
 
     public interface IDeployStep<out T> : IDeployStep

@@ -3,7 +3,7 @@
     using System;
     using JetBrains.Annotations;
 
-    public class ActionDeployStep : DeployStepBase<ActionDeploySettings>
+    public class ActionDeployStep : DeployStepBase<ActionDeploySettings>, IDisposable
     {
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
         public ActionDeployStep([NotNull] ActionDeploySettings settings) : base(settings)
@@ -25,7 +25,7 @@
         /// <summary>
         ///     Финализировать шаг. Вызывается после применения всех шагов
         /// </summary>
-        public override void Close()
+        public void Dispose()
         {
             Settings.Close?.Invoke();
         }

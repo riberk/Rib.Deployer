@@ -24,12 +24,5 @@
         public abstract void Apply();
 
         public abstract void Rollback();
-
-        /// <summary>
-        /// Финализировать шаг. Вызывается после применения всех шагов
-        /// </summary>
-        public virtual void Close()
-        {
-        }
     }
 }

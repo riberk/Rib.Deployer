@@ -80,6 +80,7 @@
         public void CloseTest()
         {
             var m1 = _mockFactory.Create<IDeployStep>();
+            var m1Disposable = m1.As<IDisposable>();
             var m2 = _mockFactory.Create<IDeployStep>();
             m1.Setup(x => x.Name).Returns("Name 1").Verifiable();
             m2.Setup(x => x.Name).Returns("Name 2").Verifiable();
@@ -91,9 +92,10 @@
             m1.Setup(x => x.Rollback()).Verifiable();
             m2.Setup(x => x.Rollback()).Verifiable();
             step.Rollback();
-            m1.Setup(x => x.Close()).Verifiable();
-            m2.Setup(x => x.Close()).Verifiable();
-            step.Close();
+
+            m1Disposable.Setup(x => x.Dispose()).Verifiable();
+
+            step.Dispose();
         }
 
         [TestMethod]

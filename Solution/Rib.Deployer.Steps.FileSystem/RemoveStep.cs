@@ -4,7 +4,7 @@
     using System.IO;
     using JetBrains.Annotations;
 
-    public class RemoveStep : DeployStepBase<FsSettings>
+    public class RemoveStep : DeployStepBase<FsSettings>, IDisposable
     {
         [NotNull] private string _tmpDirPath;
         [NotNull] private string _destPath;
@@ -56,7 +56,7 @@
         /// <summary>
         ///     Финализировать шаг. Вызывается после применения всех шагов
         /// </summary>
-        public override void Close()
+        public void Dispose()
         {
             Logger.Info($"Remove {Settings.Src} permanent");
             Logger.Info($"Remove {_tmpDirPath}");

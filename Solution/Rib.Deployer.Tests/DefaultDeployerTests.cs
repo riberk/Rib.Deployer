@@ -41,8 +41,8 @@
             s1.Setup(x => x.Apply()).Verifiable();
             s2.Setup(x => x.Apply()).Verifiable();
 
-            s1.Setup(x => x.Close()).Verifiable();
-            s2.Setup(x => x.Close()).Verifiable();
+            var s1Disp = s1.As<IDisposable>();
+            s1Disp.Setup(x => x.Dispose()).Verifiable();
 
             new DefaultDeployer(s1.Object, s2.Object).Deploy();
         }
@@ -105,8 +105,11 @@
             s1.Setup(x => x.Apply()).Verifiable();
             s2.Setup(x => x.Apply()).Verifiable();
 
-            s1.Setup(x => x.Close()).Throws(exception).Verifiable();
-            s2.Setup(x => x.Close()).Verifiable();
+            var s1Disp = s1.As<IDisposable>();
+            var s2Disp = s2.As<IDisposable>();
+
+            s1Disp.Setup(x => x.Dispose()).Throws(exception).Verifiable();
+            s2Disp.Setup(x => x.Dispose()).Verifiable();
             new DefaultDeployer(s1.Object, s2.Object).Deploy();
         }
     }

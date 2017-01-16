@@ -35,7 +35,7 @@
             Assert.AreEqual(1, i);
             step.Rollback();
             Assert.AreEqual(0, i);
-            step.Close();
+            step.Dispose();
             Assert.AreEqual(-1, i);
         }
 

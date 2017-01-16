@@ -5,7 +5,7 @@ namespace Rib.Deployer.Steps
     using System.Linq;
     using JetBrains.Annotations;
 
-    public class TuppleStep : DeployStepBase<TuppleSettings>
+    public class TuppleStep : DeployStepBase<TuppleSettings>, IDisposable
     {
         [NotNull] private readonly List<IDeployStep> _invoked = new List<IDeployStep>();
 
@@ -49,12 +49,13 @@ namespace Rib.Deployer.Steps
         /// <summary>
         ///     Финализировать шаг. Вызывается после применения всех шагов
         /// </summary>
-        public override void Close()
+        public void Dispose()
         {
             foreach (var step in _invoked)
             {
                 Logger.Info($"Tupple step {step.Name} closing");
-                step.Close();
+                var disposable = step as IDisposable;
+                disposable?.Dispose();
                 Logger.Info($"Tupple step {step.Name} closed");
             }
         }

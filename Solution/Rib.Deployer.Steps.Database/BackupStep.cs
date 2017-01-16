@@ -1,71 +1,52 @@
 ﻿namespace Rib.Deployer.Steps.Database
 {
+    using System;
     using System.Data.SqlClient;
     using JetBrains.Annotations;
 
-    public class BackupStep : DeployStepBase<BackupSettings>
+    public class BackupStep : DeployStepBase<BackupSettings>, IDisposable
     {
+        [NotNull] private readonly IDatabaseInfo _databaseInfo;
+        private readonly bool _infoOwner;
+
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
-        public BackupStep([NotNull] BackupSettings settings) : base(settings)
+        public BackupStep(
+            [NotNull] BackupSettings settings, 
+            [NotNull] IDatabaseInfo databaseInfo,
+            bool infoOwner = false) : base(settings)
         {
+            if (databaseInfo == null) throw new ArgumentNullException(nameof(databaseInfo));
+            _databaseInfo = databaseInfo;
+            _infoOwner = infoOwner;
+        }
+
+        public void Dispose()
+        {
+            if (_infoOwner)
+            {
+                _databaseInfo.Dispose();
+            }
         }
 
         /// <summary>Применить шаг</summary>
         public override void Apply()
         {
-            var databaseName = new SqlConnectionStringBuilder(Settings.ConnectionString).InitialCatalog;
-            Logger.Info($"Backup {databaseName}");
-            using (var connection = new SqlConnection(Settings.ConnectionString))
-            using (var cmd = new SqlCommand($"backup database [{databaseName}] to disk = N'{Settings.BackupPath}'", connection))
-            {
-                connection.Open();
-                cmd.ExecuteNonQuery();
-            }
+            _databaseInfo.Backup(Settings.BackupPath);
         }
 
         /// <summary>Откатить шаг</summary>
         public override void Rollback()
         {
-            var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(Settings.ConnectionString);
-            var databaseName = sqlConnectionStringBuilder.InitialCatalog;
-            Logger.Info($"Restore {databaseName}");
-            sqlConnectionStringBuilder.InitialCatalog = "master";
-            using (var connection = new SqlConnection(sqlConnectionStringBuilder.ToString()))
-            using (var cmd = new SqlCommand()
-            {
-                Connection = connection
-            })
-            {
-                Logger.Trace($"Restoring database {databaseName}");
-                connection.Open();
-
-                cmd.CommandText =
-                        $"SELECT name FROM master.dbo.sysdatabases WHERE ('[' + name + ']' = N'{databaseName}' OR name = N'{databaseName}')";
-                var exists = (string)cmd.ExecuteScalar() != null;
-
-                if (exists)
-                {
-                    Logger.Trace("Set single user");
-                    cmd.CommandText = $"alter database [{databaseName}] set SINGLE_USER WITH ROLLBACK IMMEDIATE";
-                    cmd.ExecuteNonQuery();
-
-                    cmd.CommandText = $"Use [{databaseName}];";
-                    cmd.ExecuteNonQuery();
-
-                    cmd.CommandText = "Use [master];";
-                    cmd.ExecuteNonQuery();
-                }
-                
-
-                Logger.Trace("Restoring");
-                cmd.CommandText = $"restore database [{databaseName}] from disk = N'{Settings.BackupPath}'";
-                cmd.ExecuteNonQuery();
-            }
+            _databaseInfo.Restore(Settings.BackupPath);
         }
 
         public static IDeployStep Create(string name, string connectionString, string backupPath)
         {
-            return new BackupStep(new BackupSettings(name, connectionString, backupPath));
+            var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
+            var databaseName = sqlConnectionStringBuilder.InitialCatalog;
+            sqlConnectionStringBuilder.InitialCatalog = "master";
+            var info = new DatabaseInfo(databaseName, sqlConnectionStringBuilder.ToString(), false);
+            return new BackupStep(new BackupSettings(name, backupPath), info, true);
         }
     }
 }

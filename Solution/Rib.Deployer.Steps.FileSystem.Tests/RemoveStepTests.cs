@@ -1,14 +1,7 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
-using Rib.Deployer.Steps.FileSystem;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace Rib.Deployer.Steps.FileSystem
+﻿namespace Rib.Deployer.Steps.FileSystem
 {
     using System.IO;
+    using Microsoft.VisualStudio.TestTools.UnitTesting;
 
     [TestClass]
     public class RemoveStepTests
@@ -85,7 +78,7 @@ namespace Rib.Deployer.Steps.FileSystem
             var step = new RemoveStep(new FsSettings("remove", Path.Combine(path, "1.txt")));
             step.Apply();
             Assert.IsFalse(File.Exists(Path.Combine(path, "1.txt")));
-            step.Close();
+            step.Dispose();
         }
 
         [TestMethod]
@@ -100,7 +93,7 @@ namespace Rib.Deployer.Steps.FileSystem
             var step = new RemoveStep(new FsSettings("remove", path));
             step.Apply();
             Assert.IsFalse(Directory.Exists(path));
-            step.Close();
+            step.Dispose();
         }
 
         [TestMethod]
@@ -108,7 +101,6 @@ namespace Rib.Deployer.Steps.FileSystem
         {
             const string name = "name";
             const string src = "src";
-            const string dest = "dest";
             var step = RemoveStep.Create(name, src);
             Assert.IsNotNull(step as RemoveStep);
             Assert.AreEqual(name, step.Name);

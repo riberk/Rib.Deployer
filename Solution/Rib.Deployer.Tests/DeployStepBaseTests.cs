@@ -10,11 +10,6 @@
         [ExpectedException(typeof(ArgumentNullException))]
         public void DeployStepBaseTest() => new DeployStep(null);
 
-        [TestMethod]
-        public void CloseTest()
-        {
-            new DeployStep(new Settings()).Close();
-        }
 
         private class Settings : IStepSettings
         {

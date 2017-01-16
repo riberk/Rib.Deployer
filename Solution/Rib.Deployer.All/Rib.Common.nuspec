@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+
+<package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
+  <metadata>
+    <id>Rib.Deployer</id>
+    <version>1.0.0.0</version>
+    <title>Rib.Deployer.All</title>
+    <authors>Pavel Kurdikov</authors>
+    <owners>Pavel Kurdikov</owners>
+    <licenseUrl>https://github.com/riberk/Rib.Deployer/blob/master/LICENSE</licenseUrl>
+    <projectUrl>https://github.com/riberk/Rib.Deployer.git</projectUrl>
+    <requireLicenseAcceptance>false</requireLicenseAcceptance>
+    <description>Help for deploy application</description>
+    <releaseNotes></releaseNotes>
+    <copyright>Copyright 2017</copyright>
+    <tags></tags>
+    <dependencies>
+      <dependency id="Common.Logging" version="[3.3.1, 4)" />
+      <dependency id="Common.Logging.Core" version="[3.3.1, 4)" />
+    </dependencies>
+  </metadata>
+  <files>
+    <file src="bin\Release\Rib.Deployer.All.dll" target="lib\net46" />
+    <file src="bin\Release\Rib.Deployer.dll" target="lib\net46" />
+    <file src="bin\Release\Rib.Deployer.Steps.Application.dll" target="lib\net46" />
+    <file src="bin\Release\Rib.Deployer.Steps.Database.dll" target="lib\net46" />
+    <file src="bin\Release\Rib.Deployer.Steps.FileSystem.dll" target="lib\net46" />
+  </files>
+</package>
