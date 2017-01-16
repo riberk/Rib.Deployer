@@ -6,8 +6,7 @@
     public class RestoreSettings : IStepSettings
     {
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
-        public RestoreSettings(string backupPath,
-                               [NotNull] string name)
+        public RestoreSettings([NotNull] string name, [NotNull] string backupPath)
         {
             if (string.IsNullOrWhiteSpace(backupPath))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(backupPath));

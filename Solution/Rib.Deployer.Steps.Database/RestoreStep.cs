@@ -1,19 +1,23 @@
 ﻿namespace Rib.Deployer.Steps.Database
 {
     using System;
+    using System.Data.SqlClient;
     using System.IO;
     using JetBrains.Annotations;
 
     public class RestoreStep : DeployStepBase<RestoreSettings>, IDisposable
     {
         [NotNull] private readonly IDatabaseInfo _databaseInfo;
+        private readonly bool _infoOwner;
 
 
         public RestoreStep([NotNull] RestoreSettings settings,
-                           [NotNull] IDatabaseInfo databaseInfo) : base(settings)
+                           [NotNull] IDatabaseInfo databaseInfo,
+                           bool infoOwner = false) : base(settings)
         {
             if (databaseInfo == null) throw new ArgumentNullException(nameof(databaseInfo));
             _databaseInfo = databaseInfo;
+            _infoOwner = infoOwner;
         }
 
         protected virtual PreviousState PrevState { get; set; }
@@ -23,6 +27,10 @@
             if (PrevState.Exists)
             {
                 File.Delete(PrevState.BackupPath);
+            }
+            if (_infoOwner)
+            {
+                _databaseInfo.Dispose();
             }
         }
 
@@ -55,6 +63,15 @@
             {
                 _databaseInfo.Drop();
             }
+        }
+
+        public static IDeployStep Create(string name, string connectionString, string backupPath)
+        {
+            var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
+            var databaseName = sqlConnectionStringBuilder.InitialCatalog;
+            sqlConnectionStringBuilder.InitialCatalog = "master";
+            var info = new DatabaseInfo(databaseName, sqlConnectionStringBuilder.ToString(), false);
+            return new RestoreStep(new RestoreSettings(name, backupPath), info);
         }
 
         public class PreviousState

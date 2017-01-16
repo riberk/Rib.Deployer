@@ -9,6 +9,8 @@
     [TestClass]
     public class RestoreStepTests
     {
+        private const string ConnectionString = "Data Source=CurrentServer;Initial Catalog=master;Integrated Security=True";
+
         [NotNull] private Mock<IDatabaseInfo> _dbMock;
 
         [TestInitialize]
@@ -27,7 +29,7 @@
             _dbMock.Setup(x => x.Backup(It.IsAny<string>())).Callback((string path) => { backPathForRollback = path; }).Verifiable();
             _dbMock.Setup(x => x.Restore(backupPath)).Verifiable();
 
-            var restoreStep = new RestoreStepImpl(new RestoreSettings(backupPath, "name"), _dbMock.Object);
+            var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object);
             restoreStep.Apply();
 
             Assert.IsNotNull(restoreStep.State);
@@ -46,7 +48,7 @@
             _dbMock.Setup(x => x.Exists()).Returns(false).Verifiable();
             _dbMock.Setup(x => x.Restore(backupPath)).Verifiable();
 
-            var restoreStep = new RestoreStepImpl(new RestoreSettings(backupPath, "name"), _dbMock.Object);
+            var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object);
             restoreStep.Apply();
 
             Assert.IsNotNull(restoreStep.State);
@@ -60,7 +62,7 @@
         {
             const string backupPath = "backupPath";
             var rollbackBackupPath = Guid.NewGuid().ToString();
-            var restoreStep = new RestoreStepImpl(new RestoreSettings(backupPath, "name"), _dbMock.Object,
+            var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object,
                                                   new RestoreStep.PreviousState(rollbackBackupPath, true));
             _dbMock.Setup(x => x.Restore(rollbackBackupPath)).Verifiable();
 
@@ -73,7 +75,7 @@
         public void RollbackNotExistsTest()
         {
             const string backupPath = "backupPath";
-            var restoreStep = new RestoreStepImpl(new RestoreSettings(backupPath, "name"), _dbMock.Object,
+            var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object,
                                                   new RestoreStep.PreviousState(null, false));
             _dbMock.Setup(x => x.Drop()).Verifiable();
 
@@ -86,7 +88,7 @@
         public void DisposeNotExistsTest()
         {
             const string backupPath = "backupPath";
-            var restoreStep = new RestoreStepImpl(new RestoreSettings(backupPath, "name"), _dbMock.Object,
+            var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object,
                                                   new RestoreStep.PreviousState(null, false));
             restoreStep.Dispose();
         }
@@ -101,7 +103,7 @@
             }
             Assert.IsTrue(File.Exists(path));
 
-            var restoreStep = new RestoreStepImpl(new RestoreSettings(backupPath, "name"), _dbMock.Object,
+            var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object,
                                                   new RestoreStep.PreviousState(path, true));
 
             restoreStep.Dispose();
@@ -109,19 +111,48 @@
             Assert.IsFalse(File.Exists(path));
         }
 
+        [TestMethod]
+        public void CreateTest()
+        {
+            var step = RestoreStep.Create("name", ConnectionString, "path");
+            Assert.IsNotNull(step as RestoreStep);
+            Assert.AreEqual("name", step.Name);
+        }
+
+        [TestMethod]
+        public void DisposeOwnerTest()
+        {
+            var step = new RestoreStepImpl(new RestoreSettings("Apply", "123"), _dbMock.Object, new RestoreStep.PreviousState(null, false),
+                                           true);
+
+            _dbMock.Setup(x => x.Dispose()).Verifiable();
+            step.Dispose();
+            _dbMock.VerifyAll();
+        }
+
+        [TestMethod]
+        public void DisposeIsNotOwnerTest()
+        {
+            var step = new RestoreStepImpl(new RestoreSettings("Apply", "123"), _dbMock.Object, new RestoreStep.PreviousState(null, false),
+                                           false);
+            step.Dispose();
+        }
+
         public class RestoreStepImpl : RestoreStep
         {
             public RestoreStepImpl(
                 [NotNull] RestoreSettings settings,
                 [NotNull] IDatabaseInfo databaseInfo,
-                PreviousState state) : base(settings, databaseInfo)
+                PreviousState state,
+                bool isDbOwner = false) : base(settings, databaseInfo, isDbOwner)
             {
                 PrevState = state;
             }
 
             public RestoreStepImpl(
                 [NotNull] RestoreSettings settings,
-                [NotNull] IDatabaseInfo databaseInfo) : base(settings, databaseInfo)
+                [NotNull] IDatabaseInfo databaseInfo,
+                bool isDbOwner = false) : base(settings, databaseInfo, isDbOwner)
             {
             }
 
