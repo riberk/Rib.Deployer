@@ -55,6 +55,8 @@
   </ItemGroup>
   <ItemGroup>
     <Compile Include="CopyStep.cs" />
+    <Compile Include="CreateDirectorySettings.cs" />
+    <Compile Include="CreateDirectoryStep.cs" />
     <Compile Include="HasDestFsSettings.cs" />
     <Compile Include="FsSettings.cs" />
     <Compile Include="MoveStep.cs" />
