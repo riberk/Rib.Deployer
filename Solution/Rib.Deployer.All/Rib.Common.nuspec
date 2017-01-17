@@ -3,7 +3,7 @@
 <package xmlns="http://schemas.microsoft.com/packaging/2010/07/nuspec.xsd">
   <metadata>
     <id>Rib.Deployer</id>
-    <version>1.1.1</version>
+    <version>1.1.2</version>
     <title>Rib.Deployer.All</title>
     <authors>Pavel Kurdikov</authors>
     <owners>Pavel Kurdikov</owners>
