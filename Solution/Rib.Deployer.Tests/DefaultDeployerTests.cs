@@ -63,7 +63,14 @@
 
             s1.Setup(x => x.Rollback()).Verifiable();
 
-            new DefaultDeployer(s1.Object, s2.Object).Deploy();
+            try
+            {
+                new DefaultDeployer(s1.Object, s2.Object).Deploy();
+            }
+            catch (Exception e)
+            {
+                Assert.AreEqual(exception, e);
+            }
         }
 
         [TestMethod]

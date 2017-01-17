@@ -87,5 +87,21 @@
             creatingDir.Delete(true);
             creatingDir.Refresh();
         }
+
+        [TestMethod]
+        public void CreateTest()
+        {
+            var step = CreateDirectoryStep.Create("name", "path", true);
+            Assert.IsNotNull(step);
+            Assert.IsInstanceOfType(step, typeof(CreateDirectoryStep));
+        }
+
+        [TestMethod]
+        public void CreateWithLoggerTest()
+        {
+            var step = CreateDirectoryStep.Create("name", "path", null, true);
+            Assert.IsNotNull(step);
+            Assert.IsInstanceOfType(step, typeof(CreateDirectoryStep));
+        }
     }
 }
