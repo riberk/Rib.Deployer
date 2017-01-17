@@ -53,7 +53,7 @@
                         _logger.Error("Exception on revoking", revokeException);
                         throw;
                     }
-                    return;
+                    throw;
                 }
                 finally
                 {
