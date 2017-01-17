@@ -3,6 +3,7 @@
     using System;
     using System.Collections.Generic;
     using System.Diagnostics;
+    using System.Linq;
     using Common.Logging;
     using JetBrains.Annotations;
 
@@ -27,7 +28,7 @@
         {
             var watch = new Stopwatch();
             var executedSteps = new Stack<IDeployStep>();
-
+            _logger.Info($"Deploing steps: \r\n{string.Join("\r\n", _steps.Select(s => s.Name))}\r\n");
             foreach (var deployStep in _steps)
             {
                 try
