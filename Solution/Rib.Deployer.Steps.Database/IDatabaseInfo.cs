@@ -20,10 +20,12 @@
 
         /// <summary>Забекапить</summary>
         /// <param name="backupPath"></param>
-        void Backup([NotNull] string backupPath);
+        /// <param name="commandTimeout"></param>
+        void Backup([NotNull] string backupPath, int commandTimeout);
 
         /// <summary>Восстановить</summary>
         /// <param name="backupPath"></param>
-        void Restore([NotNull] string backupPath);
+        /// <param name="commandTimeout"></param>
+        void Restore([NotNull] string backupPath, int commandTimeout);
     }
 }

@@ -5,6 +5,8 @@
 
     public class BackupSettings : IStepSettings
     {
+        public const int DefaultCommandTimeout = 30;
+
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
         public BackupSettings(string name, string backupPath)
         {
@@ -18,6 +20,8 @@
         [NotNull]
         public string BackupPath { get; }
 
+        public int CommandTimeout { get; set; } = DefaultCommandTimeout;
+        
         public string Name { get; }
     }
 }

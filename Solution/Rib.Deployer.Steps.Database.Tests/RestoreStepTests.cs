@@ -26,8 +26,8 @@
             string backPathForRollback = null;
             _dbMock.Setup(x => x.Name).Returns("DbName");
             _dbMock.Setup(x => x.Exists()).Returns(true).Verifiable();
-            _dbMock.Setup(x => x.Backup(It.IsAny<string>())).Callback((string path) => { backPathForRollback = path; }).Verifiable();
-            _dbMock.Setup(x => x.Restore(backupPath)).Verifiable();
+            _dbMock.Setup(x => x.Backup(It.IsAny<string>(), RestoreSettings.DefaultCommandTimeout)).Callback((string path, int timeout) => { backPathForRollback = path; }).Verifiable();
+            _dbMock.Setup(x => x.Restore(backupPath, RestoreSettings.DefaultCommandTimeout)).Verifiable();
 
             var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object);
             restoreStep.Apply();
@@ -46,7 +46,7 @@
 
             _dbMock.Setup(x => x.Name).Returns("DbName");
             _dbMock.Setup(x => x.Exists()).Returns(false).Verifiable();
-            _dbMock.Setup(x => x.Restore(backupPath)).Verifiable();
+            _dbMock.Setup(x => x.Restore(backupPath, RestoreSettings.DefaultCommandTimeout)).Verifiable();
 
             var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object);
             restoreStep.Apply();
@@ -64,7 +64,7 @@
             var rollbackBackupPath = Guid.NewGuid().ToString();
             var restoreStep = new RestoreStepImpl(new RestoreSettings("name", backupPath), _dbMock.Object,
                                                   new RestoreStep.PreviousState(rollbackBackupPath, true));
-            _dbMock.Setup(x => x.Restore(rollbackBackupPath)).Verifiable();
+            _dbMock.Setup(x => x.Restore(rollbackBackupPath, RestoreSettings.DefaultCommandTimeout)).Verifiable();
 
             restoreStep.Rollback();
 
@@ -114,9 +114,11 @@
         [TestMethod]
         public void CreateTest()
         {
-            var step = RestoreStep.Create("name", ConnectionString, "path");
-            Assert.IsNotNull(step as RestoreStep);
+            var step = RestoreStep.Create("name", ConnectionString, "path", 50);
+            var restoreStep = step as RestoreStep;
+            Assert.IsNotNull(restoreStep);
             Assert.AreEqual("name", step.Name);
+            Assert.AreEqual(50, restoreStep.Settings.CommandTimeout);
         }
 
         [TestMethod]

@@ -25,8 +25,8 @@
             const string name = "RibDeployerApplyBackupStepTest";
             var path = Path.Combine(Directory.GetCurrentDirectory(), $"{name}.{DateTime.Now:yyyy-MM-ddTHHmmss}.bak");
 
-            _dbInfoMock.Setup(x => x.Backup(path)).Verifiable();
-            new BackupStep(new BackupSettings("Apply", path), _dbInfoMock.Object).Apply();
+            _dbInfoMock.Setup(x => x.Backup(path, 10)).Verifiable();
+            new BackupStep(new BackupSettings("Apply", path) {CommandTimeout = 10}, _dbInfoMock.Object).Apply();
             _dbInfoMock.VerifyAll();
         }
 
@@ -38,7 +38,7 @@
 
             var step = new BackupStep(new BackupSettings("Apply", path), _dbInfoMock.Object);
 
-            _dbInfoMock.Setup(x => x.Restore(path)).Verifiable();
+            _dbInfoMock.Setup(x => x.Restore(path, 30)).Verifiable();
 
             step.Rollback();
 
@@ -49,9 +49,11 @@
         [TestMethod]
         public void CreateTest()
         {
-            var step = BackupStep.Create("name", ConnectionString, "path");
-            Assert.IsNotNull(step as BackupStep);
+            var step = BackupStep.Create("name", ConnectionString, "path", 10);
+            var backupStep = step as BackupStep;
+            Assert.IsNotNull(backupStep);
             Assert.AreEqual("name", step.Name);
+            Assert.AreEqual(10, backupStep.Settings.CommandTimeout);
         }
 
         [TestMethod]

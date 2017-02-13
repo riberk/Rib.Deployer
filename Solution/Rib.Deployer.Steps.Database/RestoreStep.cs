@@ -49,7 +49,7 @@
             {
                 Logger.Info($"Database {_databaseInfo.Name} exists. Backup");
                 var backupPath = Path.Combine(Path.GetTempPath(), $"{Guid.NewGuid()}.bak");
-                _databaseInfo.Backup(backupPath);
+                _databaseInfo.Backup(backupPath, Settings.CommandTimeout);
                 PrevState = new PreviousState(backupPath, true);
             }
             else
@@ -58,14 +58,14 @@
             }
 
             Logger.Info($"Restoring database {_databaseInfo.Name}");
-            _databaseInfo.Restore(Settings.BackupPath);
+            _databaseInfo.Restore(Settings.BackupPath, Settings.CommandTimeout);
         }
 
         public override void Rollback()
         {
             if (PrevState.Exists)
             {
-                _databaseInfo.Restore(PrevState.BackupPath);
+                _databaseInfo.Restore(PrevState.BackupPath, Settings.CommandTimeout);
             }
             else
             {
@@ -73,18 +73,18 @@
             }
         }
 
-        public static IDeployStep Create(string name, string connectionString, string backupPath)
+        public static IDeployStep Create(string name, string connectionString, string backupPath, int commandTimeout)
         {
-            return Create(name, connectionString, backupPath, null);
+            return Create(name, connectionString, backupPath, commandTimeout, null);
         }
 
-        public static IDeployStep Create(string name, string connectionString, string backupPath, ILog logger)
+        public static IDeployStep Create(string name, string connectionString, string backupPath, int commandTimeout, ILog logger)
         {
             var sqlConnectionStringBuilder = new SqlConnectionStringBuilder(connectionString);
             var databaseName = sqlConnectionStringBuilder.InitialCatalog;
             sqlConnectionStringBuilder.InitialCatalog = "master";
             var info = new DatabaseInfo(databaseName, sqlConnectionStringBuilder.ToString(), false);
-            return new RestoreStep(new RestoreSettings(name, backupPath), info, true, logger);
+            return new RestoreStep(new RestoreSettings(name, backupPath) {CommandTimeout = commandTimeout}, info, true, logger);
         }
 
         public class PreviousState

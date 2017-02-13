@@ -81,7 +81,7 @@
             using (var db = new Db(dbName, MasterConnectionString))
             using (var dbInfo = new DatabaseInfo(dbName, MasterConnectionString, false))
             {
-                dbInfo.Backup(backupPath);
+                dbInfo.Backup(backupPath, 10);
                 Assert.IsTrue(File.Exists(backupPath));
                 db.EnsureBakcupIsValid(backupPath);
             }
@@ -95,14 +95,14 @@
             using (var db = new Db(databaseName, MasterConnectionString))
             using (var dbInfo = new DatabaseInfo(databaseName, MasterConnectionString, false))
             {
-                dbInfo.Backup(backupPath);
+                dbInfo.Backup(backupPath, 10);
                 Assert.IsTrue(dbInfo.Exists());
                 dbInfo.Drop();
                 Assert.IsFalse(dbInfo.Exists());
 
                 var fromDt = DateTime.Now;
                 Thread.Sleep(20);
-                dbInfo.Restore(backupPath);
+                dbInfo.Restore(backupPath, 10);
 
 
                 var lastRestore = db.LastRestore();
@@ -121,13 +121,13 @@
             using (var db = new Db(databaseName, MasterConnectionString))
             using (var dbInfo = new DatabaseInfo(databaseName, MasterConnectionString, false))
             {
-                dbInfo.Backup(backupPath);
+                dbInfo.Backup(backupPath, 10);
                 Assert.IsTrue(dbInfo.Exists());
 
                 var fromDt = DateTime.Now;
                 Thread.Sleep(20);
 
-                dbInfo.Restore(backupPath);
+                dbInfo.Restore(backupPath, 10);
 
                 var lastRestore = db.LastRestore();
                 Assert.IsNotNull(lastRestore);

@@ -59,17 +59,18 @@
             }
         }
 
-        public void Backup(string backupPath)
+        public void Backup(string backupPath, int commandTimeout)
         {
             if (string.IsNullOrWhiteSpace(backupPath))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(backupPath));
             using (var cmd = new SqlCommand($"backup database [{Name}] to disk = N'{backupPath}'", _connection))
             {
+                cmd.CommandTimeout = commandTimeout;
                 cmd.ExecuteNonQuery();
             }
         }
 
-        public void Restore(string backupPath)
+        public void Restore(string backupPath, int commandTimeout)
         {
             if (string.IsNullOrWhiteSpace(backupPath))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(backupPath));
@@ -78,6 +79,7 @@
                 Connection = _connection
             })
             {
+                cmd.CommandTimeout = commandTimeout;
                 if (Exists())
                 {
                     cmd.CommandText = $"alter database [{Name}] set SINGLE_USER WITH ROLLBACK IMMEDIATE";
