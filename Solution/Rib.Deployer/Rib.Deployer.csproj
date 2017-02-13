@@ -55,7 +55,9 @@
   <ItemGroup>
     <Compile Include="DeployerContext.cs" />
     <Compile Include="ILoggerFactory.cs" />
-    <Compile Include="Steps\ActionDeploySettings.cs" />
+    <Compile Include="Steps\ActionDeploySettings.cs">
+      <DependentUpon>ActionDeployStep.cs</DependentUpon>
+    </Compile>
     <Compile Include="Steps\ActionDeployStep.cs" />
     <Compile Include="DefaultDeployer.cs" />
     <Compile Include="DeployStepBase.cs" />
@@ -64,9 +66,13 @@
     <Compile Include="IStepSettings.cs" />
     <Compile Include="LoggerFactory.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
-    <Compile Include="Steps\ServiceStateSettings.cs" />
+    <Compile Include="Steps\ServiceStateSettings.cs">
+      <DependentUpon>ServiceStateStep.cs</DependentUpon>
+    </Compile>
     <Compile Include="Steps\ServiceStateStep.cs" />
-    <Compile Include="Steps\TuppleSettings.cs" />
+    <Compile Include="Steps\TuppleSettings.cs">
+      <DependentUpon>TuppleStep.cs</DependentUpon>
+    </Compile>
     <Compile Include="Steps\TuppleStep.cs" />
   </ItemGroup>
   <ItemGroup>
