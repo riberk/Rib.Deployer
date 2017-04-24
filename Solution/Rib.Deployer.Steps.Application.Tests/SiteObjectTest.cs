@@ -7,6 +7,6 @@
     public class SiteObjectTest
     {
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void TestnullArg() => new SiteObject(null);
+        public void TestnullArg() => new SiteObjectAdapter(null);
     }
 }

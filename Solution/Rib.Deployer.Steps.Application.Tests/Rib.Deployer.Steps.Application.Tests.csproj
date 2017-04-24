@@ -75,6 +75,7 @@
   </Choose>
   <ItemGroup>
     <Compile Include="IisApplicationSettingsTests.cs" />
+    <Compile Include="IisObjectAdapterTests.cs" />
     <Compile Include="IisObjectStateStepTests.cs" />
     <Compile Include="IisPoolStateStepTests.cs" />
     <Compile Include="IisSiteStateStepTests.cs" />

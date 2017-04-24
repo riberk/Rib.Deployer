@@ -6,24 +6,18 @@
 
     public class IisApplicationSettings : IStepSettings
     {
-        public enum State
-        {
-            Start = 1,
-            Stop = 2
-        }
-
         /// <summary>Инициализирует новый экземпляр класса <see cref="T:System.Object" />.</summary>
         public IisApplicationSettings([NotNull] string name,
                                       [NotNull] string objectName,
-                                      State newState,
+                                      IisObjectState newState,
                                       int waitDuration,
                                       int maxWaits)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
             if (string.IsNullOrWhiteSpace(objectName))
                 throw new ArgumentException("Value cannot be null or whitespace.", nameof(objectName));
-            if (!Enum.IsDefined(typeof(State), newState))
-                throw new InvalidEnumArgumentException(nameof(newState), (int) newState, typeof(State));
+            if (!Enum.IsDefined(typeof(IisObjectState), newState))
+                throw new InvalidEnumArgumentException(nameof(newState), (int) newState, typeof(IisObjectState));
             if (waitDuration <= 0) throw new ArgumentOutOfRangeException(nameof(waitDuration));
             if (maxWaits < 0) throw new ArgumentOutOfRangeException(nameof(maxWaits));
             Name = name;
@@ -36,7 +30,7 @@
         [NotNull]
         public string ObjectName { get; }
 
-        public State NewState { get; }
+        public IisObjectState NewState { get; }
 
         /// <summary>Длительность одного ожидания перехода в новый стату</summary>
         public int WaitDuration { get; }

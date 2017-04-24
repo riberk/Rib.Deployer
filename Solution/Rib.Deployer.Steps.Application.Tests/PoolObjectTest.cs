@@ -7,6 +7,6 @@
     public class PoolObjectTest
     {
         [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void TestnullArg() => new PoolObject(null);
+        public void TestnullArg() => new PoolObjectAdapter(null);
     }
 }

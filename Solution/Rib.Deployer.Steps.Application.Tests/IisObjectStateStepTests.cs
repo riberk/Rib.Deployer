@@ -13,7 +13,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisSiteStateStep);
             Assert.AreEqual("start", iisSiteStateStep.Name);
             Assert.AreEqual("site", iisSiteStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Start, iisSiteStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Started, iisSiteStateStep.Settings.NewState);
         }
 
         [TestMethod]
@@ -24,7 +24,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisSiteStateStep);
             Assert.AreEqual("start", iisSiteStateStep.Name);
             Assert.AreEqual("site", iisSiteStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Start, iisSiteStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Started, iisSiteStateStep.Settings.NewState);
         }
 
         [TestMethod]
@@ -35,7 +35,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisSiteStateStep);
             Assert.AreEqual("start", iisSiteStateStep.Name);
             Assert.AreEqual("site", iisSiteStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Stop, iisSiteStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Stoped, iisSiteStateStep.Settings.NewState);
         }
 
         [TestMethod]
@@ -46,7 +46,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisSiteStateStep);
             Assert.AreEqual("start", iisSiteStateStep.Name);
             Assert.AreEqual("site", iisSiteStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Stop, iisSiteStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Stoped, iisSiteStateStep.Settings.NewState);
         }
 
         [TestMethod]
@@ -57,7 +57,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisPoolStateStep);
             Assert.AreEqual("start", iisPoolStateStep.Name);
             Assert.AreEqual("site", iisPoolStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Stop, iisPoolStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Stoped, iisPoolStateStep.Settings.NewState);
         }
 
         [TestMethod]
@@ -68,7 +68,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisPoolStateStep);
             Assert.AreEqual("start", iisPoolStateStep.Name);
             Assert.AreEqual("site", iisPoolStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Stop, iisPoolStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Stoped, iisPoolStateStep.Settings.NewState);
         }
 
         [TestMethod]
@@ -79,7 +79,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisPoolStateStep);
             Assert.AreEqual("start", iisPoolStateStep.Name);
             Assert.AreEqual("site", iisPoolStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Start, iisPoolStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Started, iisPoolStateStep.Settings.NewState);
         }
 
         [TestMethod]
@@ -90,7 +90,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisPoolStateStep);
             Assert.AreEqual("start", iisPoolStateStep.Name);
             Assert.AreEqual("site", iisPoolStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Start, iisPoolStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Started, iisPoolStateStep.Settings.NewState);
         }
     }
 }

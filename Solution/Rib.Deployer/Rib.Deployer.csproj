@@ -68,6 +68,7 @@
     <Compile Include="Steps\ServiceStateStep.cs" />
     <Compile Include="Steps\TuppleSettings.cs" />
     <Compile Include="Steps\TuppleStep.cs" />
+    <Compile Include="Steps\WindowsServiceState.cs" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
