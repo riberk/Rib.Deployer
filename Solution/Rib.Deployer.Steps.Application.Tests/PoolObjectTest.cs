@@ -1,12 +1,12 @@
 ﻿namespace Rib.Deployer.Steps.Application
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class PoolObjectTest
     {
-        [TestMethod, ExpectedException(typeof(ArgumentNullException))]
-        public void TestnullArg() => new PoolObject(null);
+        [Test] 
+        public void TestnullArg() => Assert.Throws<ArgumentNullException>(() => new PoolObjectAdapter(null));
     }
 }

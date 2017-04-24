@@ -11,10 +11,10 @@ namespace Rib.Deployer.Steps.Application
         {
         }
 
-        internal override IIIsObject GetObject(string name, ServerManager sm)
+        internal override IIisObject GetObject(string name, ServerManager sm)
         {
             var site = sm?.ApplicationPools?[name];
-            return site != null ? new PoolObject(site) : null;
+            return site != null ? new PoolObjectAdapter(site) : null;
         }
     }
 }

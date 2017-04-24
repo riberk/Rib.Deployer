@@ -1,15 +1,16 @@
 ﻿namespace Rib.Deployer.Steps.FileSystem
 {
     using System.IO;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+    using TestInfrastructure;
 
-    [TestClass]
+    [TestFixture]
     public class RemoveStepTests
     {
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "RemovedItems")]
+        [Test]
         public void ApplyTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "RemovedItems");
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "RemovedItems");
 
@@ -19,11 +20,12 @@
             Assert.IsFalse(File.Exists(Path.Combine(path, "1.txt")));
         }
 
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "DirRemovedItems")]
-        [DeploymentItem("TestFiles/2.txt", "DirRemovedItems")]
+        [Test]
         public void ApplyDirTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "DirRemovedItems");
+            TestFsHelper.CopyToDirectory("TestFiles/2.txt", "DirRemovedItems");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "DirRemovedItems");
 
@@ -34,10 +36,11 @@
         }
 
 
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "RollbackRemovedItems")]
+        [Test]
         public void RollbackTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "RollbackRemovedItems");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "RollbackRemovedItems");
 
@@ -49,11 +52,12 @@
             Assert.IsTrue(File.Exists(Path.Combine(path, "1.txt")));
         }
 
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "RollbackDirRemovedItems")]
-        [DeploymentItem("TestFiles/2.txt", "RollbackDirRemovedItems")]
+        [Test]
         public void RollbackDirTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "RollbackDirRemovedItems");
+            TestFsHelper.CopyToDirectory("TestFiles/2.txt", "RollbackDirRemovedItems");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "RollbackDirRemovedItems");
 
@@ -67,10 +71,11 @@
             Assert.IsTrue(File.Exists(Path.Combine(path, "2.txt")));
         }
 
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "CloseRemovedItems")]
+        [Test]
         public void CloseTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "CloseRemovedItems");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "CloseRemovedItems");
 
@@ -81,11 +86,12 @@
             step.Dispose();
         }
 
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "ClosekDirRemovedItems")]
-        [DeploymentItem("TestFiles/2.txt", "ClosekDirRemovedItems")]
+        [Test]
         public void CloseDirTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "ClosekDirRemovedItems");
+            TestFsHelper.CopyToDirectory("TestFiles/2.txt", "ClosekDirRemovedItems");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "ClosekDirRemovedItems");
 
@@ -96,7 +102,7 @@
             step.Dispose();
         }
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             const string name = "name";

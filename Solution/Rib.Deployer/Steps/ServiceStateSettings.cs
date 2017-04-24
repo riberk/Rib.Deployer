@@ -5,16 +5,10 @@
 
     public class ServiceStateSettings : IStepSettings
     {
-        public enum State
-        {
-            Start = 1,
-            Stop = 2
-        }
-
         public ServiceStateSettings(
             [NotNull] string name,
             [NotNull] string serviceName,
-            State newState,
+            WindowsServiceState newState,
             int timeoutInMilliseconds)
         {
             if (string.IsNullOrWhiteSpace(name)) throw new ArgumentException("Value cannot be null or whitespace.", nameof(name));
@@ -30,7 +24,7 @@
         [NotNull]
         public string ServiceName { get; }
 
-        public State NewState { get; }
+        public WindowsServiceState NewState { get; }
 
         public int TimeoutInMilliseconds { get; }
 

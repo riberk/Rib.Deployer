@@ -2,15 +2,17 @@
 {
     using System;
     using System.IO;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+    using TestInfrastructure;
 
-    [TestClass]
+    [TestFixture]
     public class FsSettingsTests
     {
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "Dir")]
+        [Test]
         public void FsSettingsTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "Dir");
+
             var dirSettings = new FsSettings("name", "Dir");
 
             Assert.IsTrue(dirSettings.SrcIsDirectory);
@@ -27,28 +29,22 @@
             Assert.AreEqual("Dir\\1.txt", fileSettings.Src);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void FsSettingsNull1() => new FsSettings(null, "Dir");
+        [Test]
+        public void FsSettingsNull1()  => Assert.Throws<ArgumentException>(() =>  new FsSettings(null, "Dir"));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void FsSettingsNull2() => new FsSettings(string.Empty, "Dir");
+        [Test]
+        public void FsSettingsNull2()  => Assert.Throws<ArgumentException>(() =>  new FsSettings(string.Empty, "Dir"));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void FsSettingsNull3() => new FsSettings("   ", "Dir");
+        [Test]
+        public void FsSettingsNull3()  => Assert.Throws<ArgumentException>(() =>  new FsSettings("   ", "Dir"));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void FsSettingsNull4() => new FsSettings("name", null);
+        [Test]
+        public void FsSettingsNull4()  => Assert.Throws<ArgumentException>(() =>  new FsSettings("name", null));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void FsSettingsNull5() => new FsSettings("name", string.Empty);
+        [Test]
+        public void FsSettingsNull5()  => Assert.Throws<ArgumentException>(() =>  new FsSettings("name", string.Empty));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void FsSettingsNull6() => new FsSettings("name", "   ");
+        [Test]
+        public void FsSettingsNull6()  => Assert.Throws<ArgumentException>(() =>  new FsSettings("name", "   "));
     }
 }

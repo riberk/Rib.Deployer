@@ -1,11 +1,11 @@
 namespace Rib.Deployer.Steps.Application
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class IisObjectStateStepTests
     {
-        [TestMethod]
+        [Test]
         public void CreateSiteStarterTest()
         {
             var res = IisObjectStateStep.CreateSiteStarter("start", "site");
@@ -13,10 +13,10 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisSiteStateStep);
             Assert.AreEqual("start", iisSiteStateStep.Name);
             Assert.AreEqual("site", iisSiteStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Start, iisSiteStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Started, iisSiteStateStep.Settings.NewState);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateSiteStarterWithLogTest()
         {
             var res = IisObjectStateStep.CreateSiteStarter("start", "site", null);
@@ -24,10 +24,10 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisSiteStateStep);
             Assert.AreEqual("start", iisSiteStateStep.Name);
             Assert.AreEqual("site", iisSiteStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Start, iisSiteStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Started, iisSiteStateStep.Settings.NewState);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateSiteStoperTest()
         {
             var res = IisObjectStateStep.CreateSiteStoper("start", "site");
@@ -35,10 +35,10 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisSiteStateStep);
             Assert.AreEqual("start", iisSiteStateStep.Name);
             Assert.AreEqual("site", iisSiteStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Stop, iisSiteStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Stoped, iisSiteStateStep.Settings.NewState);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateSiteStoperWithLogTest()
         {
             var res = IisObjectStateStep.CreateSiteStoper("start", "site", null);
@@ -46,10 +46,10 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisSiteStateStep);
             Assert.AreEqual("start", iisSiteStateStep.Name);
             Assert.AreEqual("site", iisSiteStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Stop, iisSiteStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Stoped, iisSiteStateStep.Settings.NewState);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePoolStoperTest()
         {
             var res = IisObjectStateStep.CreatePoolStoper("start", "site");
@@ -57,10 +57,10 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisPoolStateStep);
             Assert.AreEqual("start", iisPoolStateStep.Name);
             Assert.AreEqual("site", iisPoolStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Stop, iisPoolStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Stoped, iisPoolStateStep.Settings.NewState);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePoolStoperWithLoggerTest()
         {
             var res = IisObjectStateStep.CreatePoolStoper("start", "site", null);
@@ -68,10 +68,10 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisPoolStateStep);
             Assert.AreEqual("start", iisPoolStateStep.Name);
             Assert.AreEqual("site", iisPoolStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Stop, iisPoolStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Stoped, iisPoolStateStep.Settings.NewState);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePoolStarterTest()
         {
             var res = IisObjectStateStep.CreatePoolStarter("start", "site");
@@ -79,10 +79,10 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisPoolStateStep);
             Assert.AreEqual("start", iisPoolStateStep.Name);
             Assert.AreEqual("site", iisPoolStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Start, iisPoolStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Started, iisPoolStateStep.Settings.NewState);
         }
 
-        [TestMethod]
+        [Test]
         public void CreatePoolStarterWithLoggerTest()
         {
             var res = IisObjectStateStep.CreatePoolStarter("start", "site", null);
@@ -90,7 +90,7 @@ namespace Rib.Deployer.Steps.Application
             Assert.IsNotNull(iisPoolStateStep);
             Assert.AreEqual("start", iisPoolStateStep.Name);
             Assert.AreEqual("site", iisPoolStateStep.Settings.ObjectName);
-            Assert.AreEqual(IisApplicationSettings.State.Start, iisPoolStateStep.Settings.NewState);
+            Assert.AreEqual(IisObjectState.Started, iisPoolStateStep.Settings.NewState);
         }
     }
 }

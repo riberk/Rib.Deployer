@@ -11,10 +11,10 @@
         {
         }
 
-        internal override IIIsObject GetObject(string name, ServerManager sm)
+        internal override IIisObject GetObject(string name, ServerManager sm)
         {
             var site = sm?.Sites?[name];
-            return site != null ? new SiteObject(site) : null;
+            return site != null ? new SiteObjectAdapter(site) : null;
         }
     }
 }

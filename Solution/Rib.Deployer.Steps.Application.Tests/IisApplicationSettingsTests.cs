@@ -2,52 +2,43 @@
 {
     using System;
     using System.ComponentModel;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class IisApplicationSettingsTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ActionDeploySettingsNameNullTest() => new IisApplicationSettings(null, "site", IisApplicationSettings.State.Start, 10, 10);
+        [Test]
+        public void ActionDeploySettingsNameNullTest()  => Assert.Throws<ArgumentException>(() =>  new IisApplicationSettings(null, "site", IisObjectState.Started, 10, 10));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void ActionDeploySettingsNameEmptyTest()
-                => new IisApplicationSettings(string.Empty, "site", IisApplicationSettings.State.Start, 10, 10);
+                 => Assert.Throws<ArgumentException>(() =>  new IisApplicationSettings(string.Empty, "site", IisObjectState.Started, 10, 10));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void ActionDeploySettingsNameWhiteSpaceTest()
-                => new IisApplicationSettings("   ", "site", IisApplicationSettings.State.Start, 10, 10);
+                 => Assert.Throws<ArgumentException>(() =>  new IisApplicationSettings("   ", "site", IisObjectState.Started, 10, 10));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ActionDeploySettingsSiteNullTest() => new IisApplicationSettings("name", null, IisApplicationSettings.State.Start, 10, 10);
+        [Test]
+        public void ActionDeploySettingsSiteNullTest()  => Assert.Throws<ArgumentException>(() =>  new IisApplicationSettings("name", null, IisObjectState.Started, 10, 10));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void ActionDeploySettingsSiteEmptyTest()
-                => new IisApplicationSettings("name", string.Empty, IisApplicationSettings.State.Start, 10, 10);
+                 => Assert.Throws<ArgumentException>(() =>  new IisApplicationSettings("name", string.Empty, IisObjectState.Started, 10, 10));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
+        [Test]
         public void ActionDeploySettingsSiteWhiteSpaceTest()
-                => new IisApplicationSettings("name", "   ", IisApplicationSettings.State.Start, 10, 10);
+                 => Assert.Throws<ArgumentException>(() =>  new IisApplicationSettings("name", "   ", IisObjectState.Started, 10, 10));
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidEnumArgumentException))]
+        [Test]
         public void ActionDeploySettingsEnumIsNotDefinedTest()
-                => new IisApplicationSettings("name", "site", (IisApplicationSettings.State) 100, 10, 10);
+                 => Assert.Throws<InvalidEnumArgumentException>(() =>  new IisApplicationSettings("name", "site", (IisObjectState) 100, 10, 10));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void ActionDeploySettingsWaitOutOfRangeTest()
-                => new IisApplicationSettings("name", "site", IisApplicationSettings.State.Start, 0, 10);
+                 => Assert.Throws<ArgumentOutOfRangeException>(() =>  new IisApplicationSettings("name", "site", IisObjectState.Started, 0, 10));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void ActionDeploySettingsMaxWaitsOutOfRangeTest()
-                => new IisApplicationSettings("name", "site", IisApplicationSettings.State.Start, 100, -1);
+                 => Assert.Throws<ArgumentOutOfRangeException>(() =>  new IisApplicationSettings("name", "site", IisObjectState.Started, 100, -1));
     }
 }

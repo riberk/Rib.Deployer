@@ -1,14 +1,11 @@
 namespace Rib.Deployer.Steps.Application
 {
-    using Microsoft.Web.Administration;
-
-    internal interface IIIsObject
+    internal interface IIisObject
     {
-        ObjectState Start();
+        IisObjectState State { get; }
 
-        ObjectState State { get;  }
-
-        ObjectState Stop();
         string Name { get; }
+
+        IisObjectState SetState(IisObjectState state);
     }
 }

@@ -17,13 +17,27 @@ namespace Rib.Deployer.Steps.FileSystem
             if (Settings.SrcIsDirectory)
             {
                 Logger.Debug("Src is directory");
-                (Settings.SrcInfo as DirectoryInfo).MoveTo(Settings.Dest);
+                MoveDirectory(Settings.Src, Settings.Dest);
             }
             else
             {
                 Logger.Debug("Src is file");
                 (Settings.SrcInfo as FileInfo).MoveTo(Settings.Dest);
             }
+        }
+
+        private void MoveDirectory([NotNull] string from, [NotNull] string to)
+        {
+            if (Path.GetPathRoot(from) == Path.GetPathRoot(to))
+            {
+                Directory.Move(from, to);
+                return;
+            }
+
+            Logger.Warn("Src and dest on different drives. Using copy and delete");
+            var fromDir = new DirectoryInfo(@from);
+            FsHelper.CopyDirectory(fromDir, new DirectoryInfo(to));
+            fromDir.Delete(true);
         }
 
         public override void Rollback()
