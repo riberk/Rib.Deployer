@@ -7,6 +7,9 @@
     [TestFixture]
     public class MoveStepTests
     {
+
+        
+
         [Test]
         public void ApplyFileTest()
         {
