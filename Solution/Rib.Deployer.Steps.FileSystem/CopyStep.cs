@@ -22,7 +22,7 @@
             if (Settings.SrcIsDirectory)
             {
                 Logger.Debug("Src is directory. Copy recursive");
-                DirectoryCopy(Settings.SrcInfo as DirectoryInfo, Settings.Dest);
+                FsHelper.CopyDirectory(Settings.SrcInfo as DirectoryInfo, new DirectoryInfo(Settings.Dest));
             }
             else
             {
@@ -54,28 +54,6 @@
         public static IDeployStep Create([NotNull] string name, [NotNull] string src, [NotNull] string dest, ILog logger)
         {
             return new CopyStep(new HasDestFsSettings(name, src, dest), logger);
-        }
-
-        private static void DirectoryCopy([NotNull] DirectoryInfo dir, [NotNull] string destDirName)
-        {
-            var dirs = dir.GetDirectories();
-            if (!Directory.Exists(destDirName))
-            {
-                Directory.CreateDirectory(destDirName);
-            }
-
-            var files = dir.GetFiles();
-            foreach (var file in files)
-            {
-                var temppath = Path.Combine(destDirName, file.Name);
-                file.CopyTo(temppath, false);
-            }
-
-            foreach (var subdir in dirs)
-            {
-                var temppath = Path.Combine(destDirName, subdir.Name);
-                DirectoryCopy(subdir, temppath);
-            }
         }
     }
 }

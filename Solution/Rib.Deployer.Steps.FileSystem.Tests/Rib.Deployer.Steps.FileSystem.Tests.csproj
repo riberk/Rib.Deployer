@@ -72,6 +72,7 @@
     <Compile Include="CreateDirectoryStepTests.cs" />
     <Compile Include="FsSettingsTests.cs" />
     <Compile Include="HasDestFsSettingsTests.cs" />
+    <Compile Include="MoveStepDifferentDrivesTests.cs" />
     <Compile Include="MoveStepTests.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="RemoveStepTests.cs" />
