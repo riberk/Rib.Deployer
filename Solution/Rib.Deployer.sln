@@ -1,7 +1,7 @@
 ﻿
 Microsoft Visual Studio Solution File, Format Version 12.00
-# Visual Studio 14
-VisualStudioVersion = 14.0.24720.0
+# Visual Studio 15
+VisualStudioVersion = 15.0.26403.7
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rib.Deployer", "Rib.Deployer\Rib.Deployer.csproj", "{2C376D69-9DAE-46CF-9CC4-54F428324033}"
 EndProject
@@ -20,6 +20,8 @@ EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rib.Deployer.Tests", "Rib.Deployer.Tests\Rib.Deployer.Tests.csproj", "{B35A32EB-CF55-48B0-963A-C01185B5A1B9}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Rib.Deployer.Steps.Database.Tests", "Rib.Deployer.Steps.Database.Tests\Rib.Deployer.Steps.Database.Tests.csproj", "{8019B47A-44C6-4619-8AD5-FC9A404AD854}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TestInfrastructure", "TestInfrastructure\TestInfrastructure.csproj", "{9842A67C-4588-4874-B71D-3B8D83D156C4}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -63,6 +65,10 @@ Global
 		{8019B47A-44C6-4619-8AD5-FC9A404AD854}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{8019B47A-44C6-4619-8AD5-FC9A404AD854}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{8019B47A-44C6-4619-8AD5-FC9A404AD854}.Release|Any CPU.Build.0 = Release|Any CPU
+		{9842A67C-4588-4874-B71D-3B8D83D156C4}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{9842A67C-4588-4874-B71D-3B8D83D156C4}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{9842A67C-4588-4874-B71D-3B8D83D156C4}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{9842A67C-4588-4874-B71D-3B8D83D156C4}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

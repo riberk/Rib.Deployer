@@ -5,14 +5,14 @@
     using System.IO;
     using System.Threading;
     using JetBrains.Annotations;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class DatabaseInfoTests
     {
         private const string MasterConnectionString = "Data Source=CurrentServer;Initial Catalog=master;Integrated Security=True;";
 
-        [TestMethod]
+        [Test]
         public void DisposeOwnerTest()
         {
             const string dbName = "RibDeployer_DatabaseInfoTests_DisposeOwnerTest";
@@ -28,7 +28,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeIsNotOwnerTest()
         {
             const string dbName = "RibDeployer_DatabaseInfoTests_DisposeIsNotOwnerTest";
@@ -44,7 +44,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DropTest()
         {
             const string dbName = "RibDeployer_DatabaseInfoTests_DropTest";
@@ -57,7 +57,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ExistsTest()
         {
             const string dbName = "RibDeployer_DatabaseInfoTests_ExistsTest";
@@ -72,11 +72,11 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void BackupTest()
         {
             const string dbName = "RibDeployer_DatabaseInfoTests_BackupTest";
-            var backupPath = Path.Combine(Directory.GetCurrentDirectory(), $"{dbName}.{DateTime.Now:yyyy-MM-ddTHHmmss}.bak");
+            var backupPath = Path.Combine(@"C:\tmp", $"{dbName}.{DateTime.Now:yyyy-MM-ddTHHmmss}.bak");
 
             using (var db = new Db(dbName, MasterConnectionString))
             using (var dbInfo = new DatabaseInfo(dbName, MasterConnectionString, false))
@@ -87,11 +87,11 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RestoreWithoutDatabaseTest()
         {
             const string databaseName = "RibDeployer_DatabaseInfoTests_RestoreWithoutDatabaseTest";
-            var backupPath = Path.Combine(Directory.GetCurrentDirectory(), $"{databaseName}.{DateTime.Now:yyyy-MM-ddTHHmmss}.bak");
+            var backupPath = Path.Combine(@"C:\tmp", $"{databaseName}.{DateTime.Now:yyyy-MM-ddTHHmmss}.bak");
             using (var db = new Db(databaseName, MasterConnectionString))
             using (var dbInfo = new DatabaseInfo(databaseName, MasterConnectionString, false))
             {
@@ -113,11 +113,11 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RestoreWithDatabaseTest()
         {
             const string databaseName = "RibDeployer_DatabaseInfoTests_RestoreWithDatabaseTest";
-            var backupPath = Path.Combine(Directory.GetCurrentDirectory(), $"{databaseName}.{DateTime.Now:yyyy-MM-ddTHHmmss}.bak");
+            var backupPath = Path.Combine(@"C:\tmp", $"{databaseName}.{DateTime.Now:yyyy-MM-ddTHHmmss}.bak");
             using (var db = new Db(databaseName, MasterConnectionString))
             using (var dbInfo = new DatabaseInfo(databaseName, MasterConnectionString, false))
             {
@@ -137,7 +137,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             const string dbName = "RibDeployer_DatabaseInfoTests_CreateTest";

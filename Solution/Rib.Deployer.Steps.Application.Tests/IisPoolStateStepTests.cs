@@ -4,15 +4,15 @@ namespace Rib.Deployer.Steps.Application
     using System.Collections.Generic;
     using System.Threading;
     using JetBrains.Annotations;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Microsoft.Web.Administration;
 
-    [TestClass]
+    [TestFixture]
     public class IisPoolStateStepTests
     {
         private static readonly object LockObj = new object();
 
-        [TestMethod]
+        [Test]
         public void ApplyStopTest()
         {
             const string poolName = "ApplyStopPool";
@@ -26,16 +26,15 @@ namespace Rib.Deployer.Steps.Application
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
+        [Test]
         public void ApplyWithoutSiteTest()
         {
             const string poolName = "ApplyWithoutPoolTest";
             var step = new IisPoolStateStep(new IisApplicationSettings("stop pool", poolName, IisObjectState.Stoped, 1000, 10), null);
-            step.Apply();
+            Assert.Throws<KeyNotFoundException>(() => step.Apply());
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackWithoutSiteTest()
         {
             const string poolName = "RollbackWithoutPoolTest";
@@ -43,7 +42,7 @@ namespace Rib.Deployer.Steps.Application
             step.Rollback();
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyStartTest()
         {
             const string poolName = "ApplyStartPool";
@@ -57,7 +56,7 @@ namespace Rib.Deployer.Steps.Application
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackStopTest()
         {
             const string poolName = "RollbackStopPool";
@@ -73,7 +72,7 @@ namespace Rib.Deployer.Steps.Application
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackStartTest()
         {
             const string poolName = "RollbackStartPool";

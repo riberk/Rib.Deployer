@@ -1,13 +1,13 @@
 ﻿namespace Rib.Deployer.Steps.Application
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
     using Microsoft.Web.Administration;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class IisObjectAdapterTests
     {
-        [TestMethod]
+        [Test]
         public void SetStateTest()
         {
             var a = new Adapter(IisObjectState.Started, "name");
@@ -23,20 +23,21 @@
             Assert.AreEqual(1, a.CountStop);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void SetStateThrows()
         {
             var a = new Adapter(IisObjectState.Started, "name");
-            a.SetState((IisObjectState) 100);
+            Assert.Throws<ArgumentOutOfRangeException>(() => a.SetState((IisObjectState) 100));
         }
 
 
-        [TestMethod]
-        [ExpectedException(typeof(NotSupportedException))]
+        [Test]
         public void MapState()
         {
-            IisObjectAdapter.MapState(ObjectState.Starting);
+
+            Assert.Throws<NotSupportedException>(() => IisObjectAdapter.MapState(ObjectState.Starting));
+            Assert.Throws<NotSupportedException>(() => IisObjectAdapter.MapState(ObjectState.Stopping));
+            Assert.Throws<NotSupportedException>(() => IisObjectAdapter.MapState(ObjectState.Unknown));
         }
 
         private class Adapter : IisObjectAdapter

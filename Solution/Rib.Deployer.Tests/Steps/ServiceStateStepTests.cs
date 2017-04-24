@@ -2,14 +2,14 @@
 {
     using System;
     using System.ServiceProcess;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class ServiceStateStepTests
     {
         private const string ServiceName = "WSearch";
 
-        [TestMethod]
+        [Test]
         public void ApplyStartTest()
         {
             var starter = ServiceStateStep.CreateStarter("Test", ServiceName, null);
@@ -27,7 +27,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyStopTest()
         {
             var starter = ServiceStateStep.CreateStoper("Test", ServiceName, null);
@@ -47,7 +47,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackBeforeStateNotEq()
         {
             var starter = (ServiceStateStep)ServiceStateStep.CreateStarter("Test", ServiceName, null);
@@ -70,7 +70,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackBeforeStateEq()
         {
             var starter = (ServiceStateStep)ServiceStateStep.CreateStarter("Test", ServiceName, null);
@@ -91,12 +91,11 @@
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentOutOfRangeException))]
+        [Test]
         public void UndefinedStateTest()
         {
             var starter = new ServiceStateStep(new ServiceStateSettings("1", ServiceName, (WindowsServiceState) 100, 100), null);
-            starter.Apply();
+            Assert.Throws<ArgumentOutOfRangeException>(() => starter.Apply());
         }
     }
 }

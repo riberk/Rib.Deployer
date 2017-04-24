@@ -1,14 +1,13 @@
 ﻿namespace Rib.Deployer
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class DeployStepBaseTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void DeployStepBaseTest() => new DeployStep(null);
+        [Test]
+        public void DeployStepBaseTest()  => Assert.Throws<ArgumentNullException>(() =>  new DeployStep(null));
 
 
         private class Settings : IStepSettings

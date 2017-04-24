@@ -3,23 +3,23 @@
     using System;
     using System.IO;
     using JetBrains.Annotations;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Moq;
 
-    [TestClass]
+    [TestFixture]
     public class RestoreStepTests
     {
         private const string ConnectionString = "Data Source=CurrentServer;Initial Catalog=master;Integrated Security=True";
 
         [NotNull] private Mock<IDatabaseInfo> _dbMock;
 
-        [TestInitialize]
+        [SetUp]
         public void TestInit()
         {
             _dbMock = new Mock<IDatabaseInfo>();
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyExistsTest()
         {
             const string backupPath = "backupPath";
@@ -39,7 +39,7 @@
             _dbMock.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyNotExistsTest()
         {
             const string backupPath = "backupPath";
@@ -57,7 +57,7 @@
             _dbMock.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackExistsTest()
         {
             const string backupPath = "backupPath";
@@ -71,7 +71,7 @@
             _dbMock.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackNotExistsTest()
         {
             const string backupPath = "backupPath";
@@ -84,7 +84,7 @@
             _dbMock.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeNotExistsTest()
         {
             const string backupPath = "backupPath";
@@ -93,7 +93,7 @@
             restoreStep.Dispose();
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeExistsTest()
         {
             const string backupPath = "backupPath";
@@ -111,7 +111,7 @@
             Assert.IsFalse(File.Exists(path));
         }
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             var step = RestoreStep.Create("name", ConnectionString, "path", 50);
@@ -121,7 +121,7 @@
             Assert.AreEqual(50, restoreStep.Settings.CommandTimeout);
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeOwnerTest()
         {
             var step = new RestoreStepImpl(new RestoreSettings("Apply", "123"), _dbMock.Object, new RestoreStep.PreviousState(null, false),
@@ -132,7 +132,7 @@
             _dbMock.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeIsNotOwnerTest()
         {
             var step = new RestoreStepImpl(new RestoreSettings("Apply", "123"), _dbMock.Object, new RestoreStep.PreviousState(null, false),
