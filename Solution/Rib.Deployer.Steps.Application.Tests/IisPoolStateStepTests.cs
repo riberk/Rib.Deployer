@@ -20,7 +20,7 @@ namespace Rib.Deployer.Steps.Application
             {
                 s.EnsureStart();
                 Assert.AreEqual(ObjectState.Started, s.State());
-                var step = new IisPoolStateStep(new IisApplicationSettings("stop pool", poolName, IisApplicationSettings.State.Stop, 1000, 10), null);
+                var step = new IisPoolStateStep(new IisApplicationSettings("stop pool", poolName, IisObjectState.Stoped, 1000, 10), null);
                 step.Apply();
                 Assert.AreEqual(ObjectState.Stopped, s.State());
             }
@@ -31,7 +31,7 @@ namespace Rib.Deployer.Steps.Application
         public void ApplyWithoutSiteTest()
         {
             const string poolName = "ApplyWithoutPoolTest";
-            var step = new IisPoolStateStep(new IisApplicationSettings("stop pool", poolName, IisApplicationSettings.State.Stop, 1000, 10), null);
+            var step = new IisPoolStateStep(new IisApplicationSettings("stop pool", poolName, IisObjectState.Stoped, 1000, 10), null);
             step.Apply();
         }
 
@@ -39,7 +39,7 @@ namespace Rib.Deployer.Steps.Application
         public void RollbackWithoutSiteTest()
         {
             const string poolName = "RollbackWithoutPoolTest";
-            var step = new IisPoolStateStep(new IisApplicationSettings("stop pool", poolName, IisApplicationSettings.State.Stop, 1000, 10), null);
+            var step = new IisPoolStateStep(new IisApplicationSettings("stop pool", poolName, IisObjectState.Stoped, 1000, 10), null);
             step.Rollback();
         }
 
@@ -51,7 +51,7 @@ namespace Rib.Deployer.Steps.Application
             {
                 pool.EnsureStop();
                 Assert.AreEqual(ObjectState.Stopped, pool.State());
-                var step = new IisPoolStateStep(new IisApplicationSettings("start pool", poolName, IisApplicationSettings.State.Start, 1000, 10), null);
+                var step = new IisPoolStateStep(new IisApplicationSettings("start pool", poolName, IisObjectState.Started, 1000, 10), null);
                 step.Apply();
                 Assert.AreEqual(ObjectState.Started, pool.State());
             }
@@ -65,7 +65,7 @@ namespace Rib.Deployer.Steps.Application
             {
                 pool.EnsureStart();
                 Assert.AreEqual(ObjectState.Started, pool.State());
-                var step = new IisPoolStateStep(new IisApplicationSettings("Rollback pool", poolName, IisApplicationSettings.State.Stop, 1000, 10), null);
+                var step = new IisPoolStateStep(new IisApplicationSettings("Rollback pool", poolName, IisObjectState.Stoped, 1000, 10), null);
                 step.Apply();
                 Assert.AreEqual(ObjectState.Stopped, pool.State());
                 step.Rollback();
@@ -81,7 +81,7 @@ namespace Rib.Deployer.Steps.Application
             {
                 pool.EnsureStop();
                 Assert.AreEqual(ObjectState.Stopped, pool.State());
-                var step = new IisPoolStateStep(new IisApplicationSettings("Rollback pool", poolName, IisApplicationSettings.State.Start, 1000, 10), null);
+                var step = new IisPoolStateStep(new IisApplicationSettings("Rollback pool", poolName, IisObjectState.Started, 1000, 10), null);
                 step.Apply();
                 Assert.AreEqual(ObjectState.Started, pool.State());
                 step.Rollback();
@@ -101,8 +101,8 @@ namespace Rib.Deployer.Steps.Application
                 sm.CommitChanges();
             }
             //TODO Не успевает примениться и site.State далее падает с COM-exception.
-            // 15 установлено методом подбора. Перестает падать где-то на 7, 15 - на всякий случай
-            Thread.Sleep(15);
+            // 50 установлено методом подбора. Перестает падать где-то на 7, 50 - на всякий случай
+            Thread.Sleep(50);
             return new TempPool(name);
         }
 
