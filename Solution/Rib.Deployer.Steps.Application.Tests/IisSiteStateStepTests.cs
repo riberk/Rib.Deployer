@@ -5,15 +5,15 @@
     using System.IO;
     using System.Threading;
     using JetBrains.Annotations;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Microsoft.Web.Administration;
 
-    [TestClass]
+    [TestFixture]
     public class IisSiteStateStepTests
     {
         private static readonly object LockObj = new object();
 
-        [TestMethod]
+        [Test]
         public void ApplyStopTest()
         {
             var siteName = "ApplyStopSite";
@@ -27,16 +27,15 @@
             }
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(KeyNotFoundException))]
+        [Test]
         public void ApplyWithoutSiteTest()
         {
             var siteName = "ApplyWithoutSiteTest";
             var step = new IisSiteStateStep(new IisApplicationSettings("stop site", siteName, IisObjectState.Stoped, 1000, 10), null);
-            step.Apply();
+            Assert.Throws<KeyNotFoundException>(() => step.Apply());
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackWithoutSiteTest()
         {
             var siteName = "RollbackWithoutSiteTest";
@@ -44,7 +43,7 @@
             step.Rollback();
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyStartTest()
         {
             var siteName = "ApplyStartSite";
@@ -58,7 +57,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackStopTest()
         {
             var siteName = "RollbackStopSite";
@@ -74,7 +73,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackStartTest()
         {
             var siteName = "RollbackStartSite";
@@ -108,8 +107,8 @@
                 sm.CommitChanges();
             }
             //TODO Не успевает примениться и site.State далее падает с COM-exception.
-            // 15 установлено методом подбора. Перестает падать где-то на 7, 15 - на всякий случай
-            Thread.Sleep(15);
+            // 50 установлено методом подбора. Перестает падать где-то на 7, 50 - на всякий случай
+            Thread.Sleep(50);
             return new TempSite(directoryInfo.FullName, name);
         }
 

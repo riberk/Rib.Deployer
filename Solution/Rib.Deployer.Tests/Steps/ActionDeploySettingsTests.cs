@@ -1,4 +1,4 @@
-﻿using Microsoft.VisualStudio.TestTools.UnitTesting;
+﻿using NUnit.Framework;
 using Rib.Deployer.Steps;
 using System;
 using System.Collections.Generic;
@@ -8,27 +8,22 @@ using System.Threading.Tasks;
 
 namespace Rib.Deployer.Steps
 {
-    [TestClass]
+    [TestFixture]
     public class ActionDeploySettingsTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ActionDeploySettingsNull1Test() => new ActionDeploySettings("name", null, () => {});
+        [Test]
+        public void ActionDeploySettingsNull1Test()  => Assert.Throws<ArgumentNullException>(() =>  new ActionDeploySettings("name", null, () => {}));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void ActionDeploySettingsNull2Test() => new ActionDeploySettings("name", () => { }, null);
+        [Test]
+        public void ActionDeploySettingsNull2Test()  => Assert.Throws<ArgumentNullException>(() =>  new ActionDeploySettings("name", () => { }, null));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ActionDeploySettingsNull3Test() => new ActionDeploySettings(null, () => { }, () => {});
+        [Test]
+        public void ActionDeploySettingsNull3Test()  => Assert.Throws<ArgumentException>(() =>  new ActionDeploySettings(null, () => { }, () => {}));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ActionDeploySettingsEmptyTest() => new ActionDeploySettings(string.Empty, () => { }, () => { });
+        [Test]
+        public void ActionDeploySettingsEmptyTest()  => Assert.Throws<ArgumentException>(() =>  new ActionDeploySettings(string.Empty, () => { }, () => { }));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void ActionDeploySettingsWhiteSpaceTest() => new ActionDeploySettings("      ", () => { }, () => { });
+        [Test]
+        public void ActionDeploySettingsWhiteSpaceTest()  => Assert.Throws<ArgumentException>(() =>  new ActionDeploySettings("      ", () => { }, () => { }));
     }
 }

@@ -4,22 +4,25 @@
     using System.IO.Compression;
     using System.Linq;
     using System.Text;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+    using TestInfrastructure;
 
-    [TestClass]
+    [TestFixture]
     public class ZipStepTests
     {
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "ZipStep")]
-        [DeploymentItem("TestFiles/2.txt", "ZipStep")]
-        [DeploymentItem("TestFiles/3.txt", "ZipStep")]
+        [Test]
         public void ApplyTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "ZipStep");
+            TestFsHelper.CopyToDirectory("TestFiles/2.txt", "ZipStep");
+            TestFsHelper.CopyToDirectory("TestFiles/3.txt", "ZipStep");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "ZipStep");
             var newPath = Path.Combine(currentPath, "apply_zip.zip");
 
             var step = new ZipStep(new HasDestFsSettings("zip", path, newPath), null);
+            File.Delete(newPath);
             step.Apply();
 
             Assert.IsTrue(File.Exists(newPath));
@@ -29,6 +32,7 @@
             Assert.IsTrue(File.Exists(Path.Combine(path, "3.txt")));
 
             var unzipped = Path.Combine(currentPath, "unzipped");
+            Directory.Delete(unzipped, true);
             Directory.CreateDirectory(unzipped);
 
             ZipFile.ExtractToDirectory(newPath, unzipped, Encoding.UTF8);
@@ -42,12 +46,13 @@
             }
         }
 
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "RollbackZipStep")]
-        [DeploymentItem("TestFiles/2.txt", "RollbackZipStep")]
-        [DeploymentItem("TestFiles/3.txt", "RollbackZipStep")]
+        [Test]
         public void RollbackTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "RollbackZipStep");
+            TestFsHelper.CopyToDirectory("TestFiles/2.txt", "RollbackZipStep");
+            TestFsHelper.CopyToDirectory("TestFiles/3.txt", "RollbackZipStep");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "RollbackZipStep");
             var newPath = Path.Combine(currentPath, "rollback_zip.zip");
@@ -70,7 +75,7 @@
             Assert.IsTrue(File.Exists(Path.Combine(path, "3.txt")));
         }
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             const string name = "name";

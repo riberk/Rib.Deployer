@@ -1,21 +1,18 @@
 ﻿namespace Rib.Deployer.Steps.FileSystem
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class HasDestFsSettingsTests
     {
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void HasDestFsSettingsNullTest() => new HasDestFsSettings("name", "src", null);
+        [Test]
+        public void HasDestFsSettingsNullTest()  => Assert.Throws<ArgumentException>(() =>  new HasDestFsSettings("name", "src", null));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void HasDestFsSettingsEmptyTest() => new HasDestFsSettings("name", "src", string.Empty);
+        [Test]
+        public void HasDestFsSettingsEmptyTest()  => Assert.Throws<ArgumentException>(() =>  new HasDestFsSettings("name", "src", string.Empty));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void HasDestFsSettingsWhiteSpaceTest() => new HasDestFsSettings("name", "src", "   ");
+        [Test]
+        public void HasDestFsSettingsWhiteSpaceTest()  => Assert.Throws<ArgumentException>(() =>  new HasDestFsSettings("name", "src", "   "));
     }
 }

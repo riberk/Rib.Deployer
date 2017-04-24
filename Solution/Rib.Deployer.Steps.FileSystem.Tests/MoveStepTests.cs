@@ -1,38 +1,43 @@
 ﻿namespace Rib.Deployer.Steps.FileSystem
 {
     using System.IO;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
+    using TestInfrastructure;
 
-    [TestClass]
+    [TestFixture]
     public class MoveStepTests
     {
-        [TestMethod]
-        [DeploymentItem("TestFiles\\1.txt", "MoveFileDir")]
+        [Test]
         public void ApplyFileTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles\\1.txt", "MoveFileDir");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "MoveFileDir");
             var newPath = Path.Combine(currentPath);
 
-            var step = new MoveStep(new HasDestFsSettings("move", Path.Combine(path, "1.txt"), Path.Combine(newPath, "1_moved.txt")), null);
-            
+            var dest = Path.Combine(newPath, "1_moved.txt");
+            var step = new MoveStep(new HasDestFsSettings("move", Path.Combine(path, "1.txt"), dest), null);
+
+            File.Delete(dest);
             step.Apply();
 
             Assert.IsFalse(File.Exists(Path.Combine(path, "1.txt")));
-            Assert.IsTrue(File.Exists(Path.Combine(newPath, "1_moved.txt")));
+            Assert.IsTrue(File.Exists(dest));
         }
 
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "MoveDirTestDir")]
-        [DeploymentItem("TestFiles/2.txt", "MoveDirTestDir")]
+        [Test]
         public void ApplyDirTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "MoveDirTestDir");
+            TestFsHelper.CopyToDirectory("TestFiles/2.txt", "MoveDirTestDir");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "MoveDirTestDir");
             var newPath = Path.Combine(currentPath, "MoveDirTestDir_new");
 
             Assert.IsTrue(Directory.Exists(path));
-
+            Directory.Delete(newPath, true);
             var step = new MoveStep(new HasDestFsSettings("Copy directory", path, newPath), null);
             step.Apply();
 
@@ -42,10 +47,11 @@
             Assert.IsTrue(File.Exists(Path.Combine(newPath, "2.txt")));
         }
 
-        [TestMethod]
-        [DeploymentItem("TestFiles\\1.txt", "RollbackMoveFileDir")]
+        [Test]
         public void RollbackFileTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "RollbackMoveFileDir");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "RollbackMoveFileDir");
             var newPath = Path.Combine(currentPath);
@@ -63,11 +69,12 @@
             Assert.IsFalse(File.Exists(Path.Combine(newPath, "1_rollback_moved.txt")));
         }
 
-        [TestMethod]
-        [DeploymentItem("TestFiles/1.txt", "RollbackMoveDirTestDir")]
-        [DeploymentItem("TestFiles/2.txt", "RollbackMoveDirTestDir")]
+        [Test]
         public void RollbackDirTest()
         {
+            TestFsHelper.CopyToDirectory("TestFiles/1.txt", "RollbackMoveDirTestDir");
+            TestFsHelper.CopyToDirectory("TestFiles/2.txt", "RollbackMoveDirTestDir");
+
             var currentPath = Directory.GetCurrentDirectory();
             var path = Path.Combine(currentPath, "RollbackMoveDirTestDir");
             var newPath = Path.Combine(currentPath, "RollbackMoveDirTestDir_new");
@@ -91,7 +98,7 @@
         }
 
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             const string name = "name";

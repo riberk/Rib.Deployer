@@ -3,23 +3,23 @@
     using System;
     using System.IO;
     using JetBrains.Annotations;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Moq;
 
-    [TestClass]
+    [TestFixture]
     public class BackupStepTests
     {
         private const string ConnectionString = "Data Source=CurrentServer;Initial Catalog=master;Integrated Security=True";
 
         [NotNull] private Mock<IDatabaseInfo> _dbInfoMock;
 
-        [TestInitialize]
+        [SetUp]
         public void TestInit()
         {
             _dbInfoMock = new Mock<IDatabaseInfo>(MockBehavior.Strict);
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyTest()
         {
             const string name = "RibDeployerApplyBackupStepTest";
@@ -30,7 +30,7 @@
             _dbInfoMock.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackTest()
         {
             const string name = "RibDeployerRollbackWithoutDatabaseTest";
@@ -46,7 +46,7 @@
         }
 
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             var step = BackupStep.Create("name", ConnectionString, "path", 10);
@@ -56,7 +56,7 @@
             Assert.AreEqual(10, backupStep.Settings.CommandTimeout);
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeOwnerTest()
         {
             const string name = "RibDeployerRollbackWithoutDatabaseTest";
@@ -68,7 +68,7 @@
             _dbInfoMock.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         public void DisposeIsNotOwnerTest()
         {
             const string name = "RibDeployerRollbackWithoutDatabaseTest";

@@ -2,35 +2,33 @@
 {
     using System;
     using Common.Logging;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Moq;
 
-    [TestClass]
+    [TestFixture]
     public class DefaultDeployerTests
     {
         private MockRepository _mockFactory;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             _mockFactory = new MockRepository(MockBehavior.Strict);
         }
 
-        [TestCleanup]
+        [TearDown]
         public void Clean()
         {
             _mockFactory.VerifyAll();
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentNullException))]
-        public void NullTest() => new DefaultDeployer((ILog)null, null);
+        [Test]
+        public void NullTest() => Assert.Throws<ArgumentNullException>(() => new DefaultDeployer((ILog)null, null));
 
-        [TestMethod]
-        [ExpectedException(typeof(ArgumentException))]
-        public void EmptyTest() => new DefaultDeployer(new IDeployStep[0]);
+        [Test]
+        public void EmptyTest() => Assert.Throws<ArgumentException>(() => new DefaultDeployer(new IDeployStep[0]));
 
-        [TestMethod]
+        [Test]
         public void DeployGoodTest()
         {
             var s1 = _mockFactory.Create<IDeployStep>();
@@ -48,7 +46,7 @@
             new DefaultDeployer(s1.Object, s2.Object).Deploy();
         }
 
-        [TestMethod]
+        [Test]
         public void DeployWithRollbackTest()
         {
             var exception = new Exception();
@@ -73,7 +71,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DeployWithRollbackExceptionTest()
         {
             var exception = new Exception();
@@ -100,7 +98,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void DeployWithCloseExceptionTest()
         {
             var exception = new Exception();

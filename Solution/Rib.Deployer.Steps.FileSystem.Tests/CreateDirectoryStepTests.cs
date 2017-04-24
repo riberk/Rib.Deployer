@@ -3,12 +3,12 @@
     using System;
     using System.IO;
     using JetBrains.Annotations;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class CreateDirectoryStepTests
     {
-        [TestMethod]
+        [Test]
         public void ApplyTest()
         {
             var currentDir = Directory.GetCurrentDirectory();
@@ -21,8 +21,7 @@
             Assert.IsTrue(creatingDir.Exists);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(InvalidOperationException))]
+        [Test]
         public void ApplyExistsTest()
         {
             var currentDir = Directory.GetCurrentDirectory();
@@ -31,10 +30,10 @@
             creatingDir.Create();
             creatingDir.Refresh();
             var step = new CreateDirectoryStep(new CreateDirectorySettings(creatingDir.FullName, "dir", false), null);
-            step.Apply();
+            Assert.Throws<InvalidOperationException>(() => step.Apply());
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackTest()
         {
             var currentDir = Directory.GetCurrentDirectory();
@@ -49,8 +48,7 @@
             Assert.IsFalse(creatingDir.Exists);
         }
 
-        [TestMethod]
-        [ExpectedException(typeof(IOException))]
+        [Test]
         public void RollbackNonRecursiveTest()
         {
             var currentDir = Directory.GetCurrentDirectory();
@@ -62,10 +60,10 @@
             creatingDir.CreateSubdirectory("123");
             creatingDir.Refresh();
             Assert.IsTrue(creatingDir.Exists);
-            step.Rollback();
+            Assert.Throws<IOException>(() => step.Rollback());
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackRecursiveTest()
         {
             var currentDir = Directory.GetCurrentDirectory();
@@ -88,20 +86,20 @@
             creatingDir.Refresh();
         }
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             var step = CreateDirectoryStep.Create("name", "path", true);
             Assert.IsNotNull(step);
-            Assert.IsInstanceOfType(step, typeof(CreateDirectoryStep));
+            Assert.IsInstanceOf<CreateDirectoryStep>(step);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateWithLoggerTest()
         {
             var step = CreateDirectoryStep.Create("name", "path", null, true);
             Assert.IsNotNull(step);
-            Assert.IsInstanceOfType(step, typeof(CreateDirectoryStep));
+            Assert.IsInstanceOf<CreateDirectoryStep>(step);
         }
     }
 }

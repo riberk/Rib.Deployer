@@ -1,11 +1,11 @@
 ﻿namespace Rib.Deployer.Steps
 {
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
 
-    [TestClass]
+    [TestFixture]
     public class ActionDeployStepTests
     {
-        [TestMethod]
+        [Test]
         public void ApplyTest()
         {
             var i = 0;
@@ -13,7 +13,7 @@
             Assert.AreEqual(1, i);
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackTest()
         {
             var i = 0;
@@ -25,7 +25,7 @@
             Assert.AreEqual(0, i);
         }
 
-        [TestMethod]
+        [Test]
         public void CloseTest()
         {
             var i = 0;
@@ -39,7 +39,7 @@
             Assert.AreEqual(-1, i);
         }
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             var step = ActionDeployStep.Create("name", () => { }, () => { });

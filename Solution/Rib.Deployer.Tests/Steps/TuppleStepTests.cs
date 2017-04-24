@@ -1,15 +1,15 @@
 ﻿namespace Rib.Deployer.Steps
 {
     using System;
-    using Microsoft.VisualStudio.TestTools.UnitTesting;
+    using NUnit.Framework;
     using Moq;
 
-    [TestClass]
+    [TestFixture]
     public class TuppleStepTests
     {
         private MockRepository _mockFactory;
 
-        [TestInitialize]
+        [SetUp]
         public void Init()
         {
             _mockFactory = new MockRepository(MockBehavior.Strict);
@@ -20,7 +20,7 @@
             _mockFactory.VerifyAll();
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyTest()
         {
             var m1 = _mockFactory.Create<IDeployStep>();
@@ -35,7 +35,7 @@
             step.Apply();
         }
 
-        [TestMethod]
+        [Test]
         public void ApplyErrorTest()
         {
             var exception = new Exception();
@@ -59,7 +59,7 @@
             }
         }
 
-        [TestMethod]
+        [Test]
         public void RollbackTest()
         {
             var m1 = _mockFactory.Create<IDeployStep>();
@@ -76,7 +76,7 @@
             step.Rollback();
         }
 
-        [TestMethod]
+        [Test]
         public void CloseTest()
         {
             var m1 = _mockFactory.Create<IDeployStep>();
@@ -98,7 +98,7 @@
             step.Dispose();
         }
 
-        [TestMethod]
+        [Test]
         public void CreateTest()
         {
             var step = TuppleStep.Create("name", _mockFactory.Create<IDeployStep>().Object);
